@@ -1,0 +1,70 @@
+.primary-color {
+    background-color: #92140c;
+}
+
+.nav-text,
+.navbar-brand,
+.nav-link {
+    color: #f4fffd !important;
+}
+
+.nav-link:hover,
+.nav-text:hover {
+    color: #fec601 !important;
+}
+
+.navbar-toggler {
+    border: none;
+}
+
+.carousel-indicators [data-bs-target]{
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    outline: none;
+}
+
+.carousel .carousel-item {
+    height: 400px;
+  }
+  
+.carousel-item img {
+    position: absolute;
+    object-fit: cover;
+    top: 0;
+    left: 0;
+    min-height: 300px;
+}
+
+@media screen and (min-width: 1024px) {
+    .carousel-item:first-child {
+        top: -2in;
+    }
+
+    .brand-display-logo {
+        height: 100px;
+        width: 100px;
+    }
+}
+
+.search-button {
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+    background-color: #fec601 !important;
+    border-color: #fec601; 
+}
+
+.search-button:hover {
+    border-color: #ffd027;
+    background-color: #ffd027 !important;
+}
+
+.brand-display {
+    background-color: #92140c;
+}
+
+.brand-display-logo {
+    height: 75px;
+    width: 75px;
+}
+

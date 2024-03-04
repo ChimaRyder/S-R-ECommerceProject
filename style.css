@@ -25,7 +25,7 @@
 }
 
 .carousel .carousel-item {
-    height: 400px;
+    height: 550px;
   }
   
 .carousel-item img {
@@ -66,5 +66,11 @@
 .brand-display-logo {
     height: 75px;
     width: 75px;
+}
+
+.tag-bar.row button {
+    border-radius: 25px;
+    font-size: 14px !important;
+    width: 85px;
 }
 

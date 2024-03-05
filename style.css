@@ -74,3 +74,15 @@
     width: 85px;
 }
 
+.card {
+    --bs-card-border-width: none !important;
+}
+
+.btn-link {
+    text-decoration: none;
+    color:#92140c;
+}
+
+.btn-link:hover {
+    color:#fec601;
+}

@@ -86,3 +86,13 @@
 .btn-link:hover {
     color:#fec601;
 }
+
+.see-more {
+    background-color: #92140c;
+    border-color: #92140c;
+}
+
+.see-more:hover {
+    background-color: #fec601;
+    border-color: #fec601;
+}

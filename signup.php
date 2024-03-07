@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="login_signup.css">
   </head>
   <body>
+    <?php
+      include ("register.php");
+      include ("connect.php");
+    ?>
 
     <div class="container">
     
@@ -17,29 +21,29 @@
             </div>
     
             <div class="loginForm">
-                <h1>Sign Up!</h1>
+                <h1>Register!</h1>
     
-                <form>
+                <form method="POST">
                     <div class="form-group">
                         <label for="username">Username</label>
-                        <input type="email" class="form-control" id="username" placeholder="Enter Username">
+                        <input type="email" class="form-control" id="username" placeholder="Enter Username" name="username">
                       </div>
 
                     <div class="form-group">
-                      <label for="emailAddress">Email address</label>
-                      <input type="email" class="form-control" id="emailAddress" aria-describedby="emailHelp" placeholder="johndoe@gmail.com">
+                      <label for="emailaddress">Email address</label>
+                      <input type="email" class="form-control" id="emailaddress" aria-describedby="emailHelp" placeholder="johndoe@gmail.com" name="emailaddress">
                     </div>
                     <div class="form-group">
-                      <label for="signup_password">Password</label>
-                      <input type="password" class="form-control" id="signup_password" placeholder="Password">
+                      <label for="password">Password</label>
+                      <input type="password" class="form-control" id="password" placeholder="Password" name="password">
                     </div>
 
                     <div class="form-group">
                         <label for="confirm_password">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password">
+                        <input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password" name="confirm_password">
                       </div>
                     
-                    <button type="submit" class="btn btn-warning">Sign Up</button>
+                    <button type="submit" class="btn btn-warning" name="register">Register</button>
                 </form>                
             </div>
         </div>

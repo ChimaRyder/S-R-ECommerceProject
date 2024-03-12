@@ -23,7 +23,7 @@ header, footer {
 }
 
 .login-bg {
-    background-image: url(./images/login-bg.jpg);
+    background-image: url(../images/login-bg.jpg);
     width: 500px;
     background-size: cover;
     background-position-x: -170px;

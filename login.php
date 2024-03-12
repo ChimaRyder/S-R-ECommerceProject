@@ -1,3 +1,7 @@
+<?php
+    include ("login_account.php");
+?>
+
 <!doctype html>
 <html lang="en">
   <head>
@@ -5,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Log In</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-    <link rel="stylesheet" href="login_signup.css">
+    <link rel="stylesheet" href="css/login_signup.css">
   </head>
   <body>
     <div class="container">
@@ -18,14 +22,14 @@
             <div class="loginForm">
                 <h1>Welcome Back!</h1>
     
-                <form>
+                <form method="POST">
                     <div class="form-group">
                       <label for="emailAddress">Email address</label>
-                      <input type="email" class="form-control" id="emailAddress" aria-describedby="emailHelp" placeholder="johndoe@gmail.com">
+                      <input type="email" class="form-control" id="emailAddress" name="emailaddress" aria-describedby="emailHelp" placeholder="johndoe@gmail.com" required>
                     </div>
                     <div class="form-group">
                       <label for="login_password">Password</label>
-                      <input type="password" class="form-control" id="login_password" placeholder="Password">
+                      <input type="password" class="form-control" id="login_password" name="password" placeholder="Password" required>
                     </div>
                     <div class="form-group form-check">
                       <div>
@@ -34,7 +38,7 @@
                       </div>
                       <small class="form-text"><a href="#">Forgot Password?</a></small>
                     </div>
-                    <button type="submit" class="btn btn-warning">Login</button>
+                    <button type="submit" name="login" class="btn btn-warning">Login</button>
                 </form>
     
                 <hr>
@@ -95,12 +99,12 @@
                 Home</a>
           </li>
           <li class="nav-item mx-2">
-              <a class="nav-link" href="aboutUs.html">
+              <a class="nav-link" href="aboutUs.php">
                   About Us</a>
             </li>
 
             <li class="nav-item mx-2">
-              <a class="nav-link" href="contact.html">
+              <a class="nav-link" href="contact.php">
                   ☏ Contact</a>
             </li>
             <li class="nav-item mx-2">

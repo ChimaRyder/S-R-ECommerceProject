@@ -23,23 +23,48 @@ include ("register.php");
                 <h1>Register!</h1>
     
                 <form method="POST">
+                    <div class="row my-4">
+                        <div class="col">
+                            <label for="fname">First Name</label>
+                            <input class="form-control" id="fname" placeholder="John" name="fname" required>
+                        </div>
+                        <div class="col">
+                            <label for="lname">Last Name</label>
+                            <input class="form-control" id="lname" placeholder="Doe" name="lname" required>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <label for="birthdate">Date of Birth</label>
+                            <input class="form-control" id="birthdate" placeholder="Doe" name="birthdate" type="date" required>
+                        </div>
+                        <div class="col">
+                            <label for="gender">Gender</label>
+                            <select class="form-select" id="gender" name="gender" required>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <label for="username">Username</label>
-                        <input class="form-control" id="username" placeholder="Enter Username" name="username">
+                        <input class="form-control" id="username" placeholder="Enter Username" name="username" required>
                       </div>
 
                     <div class="form-group">
                       <label for="emailaddress">Email address</label>
-                      <input type="email" class="form-control" id="emailaddress" aria-describedby="emailHelp" placeholder="johndoe@gmail.com" name="emailaddress">
+                      <input type="email" class="form-control" id="emailaddress" aria-describedby="emailHelp" placeholder="johndoe@gmail.com" name="emailaddress" required>
                     </div>
                     <div class="form-group">
                       <label for="password">Password</label>
-                      <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                      <input type="password" class="form-control" id="password" placeholder="Password" name="password" required>
                     </div>
 
                     <div class="form-group">
                         <label for="confirm_password">Confirm Password</label>
-                        <input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password" name="confirm_password">
+                        <input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password" name="confirm_password" required>
                       </div>
                     
                     <button type="submit" class="btn btn-warning" name="register">Register</button>

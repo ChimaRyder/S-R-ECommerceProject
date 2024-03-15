@@ -1,7 +1,3 @@
-<?php
-    include ("login_account.php");
-?>
-
 <!doctype html>
 <html lang="en">
   <head>
@@ -12,6 +8,24 @@
     <link rel="stylesheet" href="css/login_signup.css">
   </head>
   <body>
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+          </svg>
+          <strong>Welcome!</strong> Your account has been created. Please login.
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+          </button>
+      </div>
+
+      <script>
+          const accountCreated = window.sessionStorage.getItem('accountCreated');
+
+          if (accountCreated === 'true') {
+              document.querySelector('.alert').style.display = 'block';
+              window.sessionStorage.removeItem('accountCreated');
+          }
+      </script>
+
     <div class="container">
     
         <div class="login-container">
@@ -30,6 +44,7 @@
                     <div class="form-group">
                       <label for="login_password">Password</label>
                       <input type="password" class="form-control" id="login_password" name="password" placeholder="Password" required>
+                        <div class="invalid-feedback">* Invalid username or password.</div>
                     </div>
                     <div class="form-group form-check">
                       <div>
@@ -73,6 +88,9 @@
         
     </div>
 
+      <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
   </body>
 <!-- FOoter-->
 
@@ -129,3 +147,7 @@
 </nav>
 
 </html>
+
+<?php
+    include ("login_account.php");
+?>

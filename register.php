@@ -15,10 +15,12 @@
         $gender = $_POST['gender'];
 
         $sqlfind = "select * from tbluseraccount where emailadd = '$emailaddress' ";
+        $sqlfinduser = "select * from tbluseraccount where username = '$username' ";
 
-        $count_users = mysqli_num_rows(mysqli_query($connection , $sqlfind));
+        $count_email = mysqli_num_rows(mysqli_query($connection , $sqlfind));
+        $count_users = mysqli_num_rows(mysqli_query($connection , $sqlfinduser));
 
-        if ($count_users == 0 && password_verify($confirm_password, $password)) {
+        if ($count_email == 0 && $count_users == 0 && password_verify($confirm_password, $password)) {
 
             //query
             $sql = "insert into tbluseraccount(username, emailadd, password) values('$username', '$emailaddress', '$password')";
@@ -28,19 +30,26 @@
             mysqli_query($connection, $profile);
 
             echo "<script>
-               window.location.href = 'login.php';
-               alert('Account created! Please login.');
+               window.sessionStorage.setItem('accountCreated', 'true');
+               window.location.replace('login.php');
             </script>";
         } else {
             if (!password_verify($confirm_password, $password)) {
-                echo "<script> 
-            window.location.href = 'signup.php';
-            alert('Invalid Password, please try again.');
-            </script>";
-            } else {
                 echo "<script>
-                alert('This account already exists.');
-                </script>";
+            document.querySelector('.password-invalid').style.display = 'block';
+            </script>";
+            }
+
+            if ($count_email != 0) {
+                echo "<script>
+            document.querySelector('.email-invalid').style.display = 'block';
+            </script>";
+            }
+
+            if ($count_users != 0) {
+                echo "<script>
+            document.querySelector('.username-invalid').style.display = 'block';
+            </script>";
             }
 
         }

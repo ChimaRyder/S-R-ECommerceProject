@@ -17,7 +17,8 @@ header, footer {
 .login-container {
     display: flex;
     justify-content: center;
-    height: 700px;
+    min-height: 700px;
+    height: 800px;
     -webkit-box-shadow: 5px 5px 20px 12px rgba(0,0,0,0.1); 
     box-shadow: 5px 5px 20px 12px rgba(0,0,0,0.1);
 }
@@ -82,4 +83,8 @@ header, footer {
     border-color: #fec601;
     color:#92140c;
     font-weight: bolder;
+}
+
+.alert {
+    display: none;
 }

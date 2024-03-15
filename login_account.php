@@ -22,13 +22,11 @@
                 </script>";
             } else {
                 echo "<script>
-            alert('Invalid email or password. Please try again.');
-            </script>";
+                document.querySelector('.invalid-feedback').style.display = 'block';
+                </script>";
 
             }
         }
-
-        echo "test";
     }
 
 ?>

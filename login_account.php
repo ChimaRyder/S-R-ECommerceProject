@@ -17,8 +17,7 @@
 
             if ($email === $row["emailadd"] && password_verify($password, $row["password"])) {
                 echo "<script>
-                window.location.href = 'index.php';
-                alert('Login successful! Welcome back, $user!');
+                window.location.href = 'dashboard.php';
                 </script>";
             } else {
                 echo "<script>

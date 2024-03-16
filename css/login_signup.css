@@ -17,8 +17,6 @@ header, footer {
 .login-container {
     display: flex;
     justify-content: center;
-    min-height: 700px;
-    height: 800px;
     -webkit-box-shadow: 5px 5px 20px 12px rgba(0,0,0,0.1); 
     box-shadow: 5px 5px 20px 12px rgba(0,0,0,0.1);
 }

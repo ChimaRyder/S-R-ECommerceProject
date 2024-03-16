@@ -17,6 +17,10 @@
     border: none;
 }
 
+.searchbar {
+    width: 35% !important;
+}
+
 .carousel-indicators [data-bs-target]{
     border-radius: 50%;
     width: 10px;
@@ -1131,6 +1135,13 @@
         }
     }
 
+.text-black {
+    color: #24262b !important;
+}
+
+.text-white {
+    fill: #f4fffd !important;
+}
     
 
     

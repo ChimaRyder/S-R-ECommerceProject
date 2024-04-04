@@ -25,6 +25,10 @@
 
             }
         }
+
+        echo "<script>
+                document.querySelector('.invalid-feedback').style.display = 'block';
+                </script>";
     }
 
 ?>

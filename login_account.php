@@ -8,14 +8,13 @@
         $password = $_POST['password'];
 
         //search for users with same email
-        $sqlfind = "select * from tbluseraccount where emailadd = '$email' ";
+        $sqlfind = "select * from tblcustomer where Email = '$email' ";
         $result = mysqli_query($connection, $sqlfind);
 
         if (mysqli_num_rows($result) === 1) {
             $row = mysqli_fetch_assoc($result);
-            $user = $row["username"];
 
-            if ($email === $row["emailadd"] && password_verify($password, $row["password"])) {
+            if ($email === $row["Email"] && password_verify($password, $row["Password"])) {
                 echo "<script>
                 window.location.href = 'dashboard.php';
                 </script>";

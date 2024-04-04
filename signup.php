@@ -30,26 +30,6 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col">
-                            <label for="birthdate">Date of Birth</label>
-                            <input class="form-control" id="birthdate" placeholder="Doe" name="birthdate" type="date" value="<?php echo isset($_POST["birthdate"]) ? $_POST["birthdate"] : ''; ?>" required>
-                        </div>
-                        <div class="col">
-                            <label for="gender">Gender</label>
-                            <select class="form-select" id="gender" name="gender" value="<?php echo isset($_POST["gender"]) ? $_POST["gender"] : ''; ?>" required>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="username">Username</label>
-                        <input class="form-control" id="username" placeholder="Enter Username" name="username" value="<?php echo isset($_POST["username"]) ? $_POST["username"] : ''; ?>" required>
-                        <div class="invalid-feedback username-invalid">This username is already in use.</div>
-                      </div>
-
                     <div class="form-group">
                       <label for="emailaddress">Email address</label>
                       <input type="email" class="form-control" id="emailaddress" aria-describedby="emailHelp" placeholder="johndoe@gmail.com" name="emailaddress" value="<?php echo isset($_POST["emailaddress"]) ? $_POST["emailaddress"] : ''; ?>" required>

@@ -65,6 +65,18 @@
       </div>
     </div>
   </div>
+
+    <?php
+      include("connect.php");
+      $sqlfind = "select * from tblcustomer";
+      $smthn = mysqli_query($connection, $sqlfind);
+      $users = mysqli_num_rows($smthn);
+
+      echo "
+          <h1>REGISTERED USERS: $users </h1>
+      "
+    ?>
+
     <!-- Clothing Display -->
     <div class="w-100">
       <div class="container-fluid w-75 text-center my-4 px-2">

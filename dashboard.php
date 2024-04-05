@@ -14,6 +14,11 @@
 
 <?php
     include ("includes/header.php");
+    if (!isset($_SESSION["Customer_ID"])){
+       echo "<script>
+               window.location.replace('index.php');
+           </script>";
+    }
 ?>
 
 <!--svg icons-->
@@ -77,14 +82,20 @@
     <div class="dropdown">
         <a href="#" class="d-flex align-items-center link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-            <strong>user</strong>
+            <strong>
+                <?php
+                    if (isset($_SESSION["Customer_ID"])) {
+                        echo $user["First_Name"];
+                    }
+                ?>
+            </strong>
         </a>
         <ul class="dropdown-menu text-small shadow">
             <li><a class="dropdown-item" href="#">New project...</a></li>
             <li><a class="dropdown-item" href="#">Settings</a></li>
             <li><a class="dropdown-item" href="#">Profile</a></li>
             <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Sign out</a></li>
+            <li><a class="dropdown-item" href="logout.php">Sign out</a></li>
         </ul>
     </div>
 </div>

@@ -15,6 +15,7 @@
             $row = mysqli_fetch_assoc($result);
 
             if ($email === $row["Email"] && password_verify($password, $row["Password"])) {
+                $_SESSION["Customer_ID"] = $row["Customer_ID"];
                 echo "<script>
                 window.location.href = 'dashboard.php';
                 </script>";

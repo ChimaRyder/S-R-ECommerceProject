@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="css/login_signup.css">
   </head>
   <body>
+  <?php
+      session_start();
+  ?>
     <div class="container">
     
         <div class="login-container">

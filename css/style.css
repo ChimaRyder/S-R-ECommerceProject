@@ -2,6 +2,10 @@
     background-color: #92140c;
 }
 
+.alert {
+    display:none;
+}
+
 .nav-text,
 .navbar-brand,
 .nav-link {

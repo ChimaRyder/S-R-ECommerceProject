@@ -85,6 +85,7 @@
                     <hr>
     
                     <small class="form-text">New to S&R? <a href="signup.php">Sign Up!</a></small>
+                    <small class="form-text">Want to be part of the S&R Family? <a href="sellersignup.php">Come and Join Us!</a></small>
                 </div>
             </div>
         </div>

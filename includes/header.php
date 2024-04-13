@@ -5,6 +5,10 @@ if (isset($_SESSION["Customer_ID"])){
     $id = $_SESSION["Customer_ID"];
     $query = "select * from tblcustomer where Customer_ID = '$id'";
     $user = mysqli_fetch_assoc(mysqli_query($connection, $query));
+}else if (isset($_SESSION["Seller_ID"])){
+    $id = $_SESSION["Seller_ID"];
+    $query = "select * from tblseller where Seller_ID = '$id'";
+    $user = mysqli_fetch_assoc(mysqli_query($connection, $query));
 }
 ?>
 
@@ -76,10 +80,12 @@ if (isset($_SESSION["Customer_ID"])){
                     </li>
                     <li class="nav-item mx-2">
                         <?php
-                        if(!isset($_SESSION["Customer_ID"])){
-                            $link = "login.php";
-                           } else {
+                        if(isset($_SESSION["Customer_ID"])){
                             $link = "dashboard.php";
+                        } else if (isset($_SESSION["Seller_ID"])){
+                            $link = "selleroverview.php";
+                        } else {
+                            $link = "login.php";
                         }
 
                         echo "

@@ -32,6 +32,10 @@
                         <a class="nav-link" href="aboutUs.php">
                             About Us</a>
                     </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="products.php">
+                            Products</a>
+                    </li>
 
                     <li class="nav-item mx-2">
                         <a class="nav-link" href="contact.php">

@@ -118,7 +118,7 @@
 
     <div class="col px-5 ">
             <h1 class="my-2">Add a Product</h1>
-            <form class="mx-2" method="POST">
+            <form class="mx-2" method="POST" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="productName" class="form-label">Product Name</label>
                     <input type="text" class="form-control" id="productName" name="product_name" required>
@@ -138,8 +138,8 @@
                     </div>
                 </div>
                 <div class="mb-3">
-                    <label for="productImage" class="form-label">Product Image</label>
-                    <input type="file" class="form-control" id="productImage" name="product_image" accept=".jpg, .png, .jpeg, .avif" required>
+                    <label for="product_image" class="form-label">Product Image</label>
+                    <input type="file" class="form-control" id="product_image" name="product_image" required>
                 </div>
                 <button type="submit" class="btn btn-primary" name="add_product">Add Product</button>
             </form>

@@ -8,18 +8,18 @@
         $price = $_POST["price"];
         $stock = $_POST["stock"];
 
-        $pimage = $_FILES["product_image"]["name"];
+        $pimage = $_FILES['product_image']["name"];
         $temppimage = $_FILES["product_image"]["tmp_name"];
-        $folder = "uploaded_images/".$pimage;
 
-        $query = "insert into tblproduct(Store_ID, Product_Name, Product_Description, Price, Stock, Product_Image) values('$store','$pname', '$pdesc', '$price', '$stock', '$pimage')";
+        $validExtension = ['jpg', 'jpeg', 'png', 'avif']; // for later
+        $extension = explode('.', $pimage);
+        $extension = strtolower(end($extension));
+        $newImageName = uniqid();
+        $newImageName .= '.' . $extension;
+        move_uploaded_file($temppimage, 'uploaded_images/'.$newImageName);
+
+        $query = "insert into tblproduct(Store_ID, Product_Name, Product_Description, Price, Stock, Product_Image) values('$store','$pname', '$pdesc', '$price', '$stock', '$newImageName')";
         mysqli_query($connection, $query);
-
-        if (move_uploaded_file($temppimage, $folder)) {
-            echo "File uploaded";
-        } else {
-            echo "File not uploaded";
-        }
 
 
         echo "<script>

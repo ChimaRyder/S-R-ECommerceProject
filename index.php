@@ -65,19 +65,120 @@
       </div>
     </div>
   </div>
+<br> <br>
 
-    <?php
-      include("connect.php");
-      $sqlfind = "select * from tblcustomer";
-      $smthn = mysqli_query($connection, $sqlfind);
-      $users = mysqli_num_rows($smthn);
+<?php
+  function displayCustomerTable() {
+    global $connection;
 
-      echo "
-          <h1>REGISTERED USERS: $users </h1>
-      "
-    ?>
+    $sqlfind = "select * from tblcustomer";
+    $smthn = mysqli_query($connection, $sqlfind);
 
-    <!-- Clothing Display -->
+    $sellerArray = array();
+
+    if($smthn){
+      while($row = $smthn->fetch_assoc()){
+        $sellerArray[] = $row;
+      }
+      $smthn->free();
+    }
+
+    $tablestr = "<div class='table-responsive-lg'><table class='table table-bordered table-hover manageAppTable'>
+    <thead>
+      <tr>
+        <th scope ='col'>Customer ID</th>
+        <th scope ='col'>First Name</th>
+        <th scope ='col'>Last Name</th>
+        <th scope ='col'>Email</th>
+      </tr>
+  </thead>
+  <tbody>";
+    
+  
+  foreach($sellerArray as $seller){
+    $tablestr .= '
+      <tr>
+          <th scope="row">'.$seller["Customer_ID"].'</td>
+          <td>'.$seller["First_Name"].'</td>
+          <td>'.$seller["Last_Name"].'</td>
+          <td>'.$seller["Email"].'</td>
+          <td><a href="selleroverview.php?seller='.$seller["First_Name"].'" class="btn btn-outline-succes">Edit</a></td>
+      </tr>
+    ';
+  }
+  $tablestr .= '</tbody></table></div>';
+
+  return $tablestr;
+}
+?>
+
+ <div class-"manageAppDiv" style="border bottom: 2 px black solid; border top: 2 px black solid;">
+    <div class="btn label" id="manageSellerDiv" style ="font size: 4vw; text-aling:left">List Of Customers</div>
+
+    <div style="display: fkex; justify-content: center;" id ="manageSellerTable">
+      <?php
+        echo displayCustomerTable();
+      ?>
+    </div>
+  </div>
+
+
+<?php
+  function displaySellerTable() {
+    global $connection;
+
+    $sqlfind = "select * from tblseller";
+    $smthn = mysqli_query($connection, $sqlfind);
+
+    $sellerArray = array();
+
+    if($smthn){
+      while($row = $smthn->fetch_assoc()){
+        $sellerArray[] = $row;
+      }
+      $smthn->free();
+    }
+
+    $tablestr = "<div class='table-responsive-lg'><table class='table table-bordered table-hover manageAppTable'>
+    <thead>
+      <tr>
+        <th scope ='col'>Seller ID</th>
+        <th scope ='col'>First Name</th>
+        <th scope ='col'>Last Name</th>
+        <th scope ='col'>Email</th>
+      </tr>
+  </thead>
+  <tbody>";
+    
+  
+  foreach($sellerArray as $seller){
+    $tablestr .= '
+      <tr>
+          <th scope="row">'.$seller["Seller_ID"].'</td>
+          <td>'.$seller["First_Name"].'</td>
+          <td>'.$seller["Last_Name"].'</td>
+          <td>'.$seller["Email"].'</td>
+          <td><a href="selleroverview.php?seller='.$seller["First_Name"].'" class="btn btn-outline-succes">Edit</a></td>
+      </tr>
+    ';
+  }
+  $tablestr .= '</tbody></table></div>';
+
+  return $tablestr;
+}
+?>
+
+  <div class-"manageAppDiv" style="border bottom: 2 px black solid; border top: 2 px black solid;">
+    <div class="btn label" id="manageSellerDiv" style ="font size: 4vw; text-aling:left">List Of Sellers</div>
+
+    <div style="display: fkex; justify-content: center;" id ="manageSellerTable">
+      <?php
+        echo displaySellerTable();
+      ?>
+    </div>
+  </div>
+
+    <!-- Clothing Display-->
     <div class="w-100">
       <div class="container-fluid w-75 text-center my-4 px-2">
         <div class="row tag-bar mb-3">

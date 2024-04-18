@@ -114,6 +114,25 @@
         </div>
     </div>
 
+    <form class="col d-flex flex-column align-items-center mt-2" method="post">
+        <h1>Store Settings</h1>
+        <div class="col-md-5 mb-3">
+            <label for="storeName" class="form-label">Store Name:</label>
+            <input type="text" class="form-control" id="storeName" name="storeName">
+        </div>
+        <div class="col-md-5 mb-3">
+            <label for="storeDescription" class="form-label">Store Description:</label>
+            <textarea class="form-control" id="storeDescription" name="storeDescription" rows="5"></textarea>
+        </div>
+        <div class="col-md-5 mb-3">
+            <label for="storeAddress" class="form-label">Store Address:</label>
+            <input type="text" class="form-control" id="storeAddress" name="storeAddress">
+        </div>
+        <div class="col-md-5">
+            <button type="submit" class="btn btn-primary" name="saveStoreSettings">Save</button>
+        </div>
+    </form>
+
 </div>
 <?php
     include("includes/footer.php");
@@ -125,3 +144,48 @@
 
 </body>
 </html>
+
+<?php
+    if (isset($_POST["saveStoreSettings"])) {
+        $params = "";
+        $total = 0;
+        if (isset($_POST["storeName"])) {
+            $storeName = $_POST["storeName"];
+            $params .= "Store_Name = '$storeName'";
+            $total++;
+        }
+        if (isset($_POST["storeDescription"])) {
+            if ($total > 0) {
+                $storeDescription = $_POST["storeDescription"];
+                $params .= ", Store_Description = '$storeDescription'";
+                $total++;
+            } else {
+                $storeDescription = $_POST["storeDescription"];
+                $params .= "Store_Description = '$storeDescription'";
+                $total++;
+            }
+        }
+        if (isset($_POST["storeAddress"])) {
+            if ($total > 0) {
+                $storeAddress = $_POST["storeAddress"];
+                $params .= ", Store_Address = '$storeAddress'";
+                $total++;
+            } else {
+                $storeAddress = $_POST["storeAddress"];
+                $params .= "Store_Address = '$storeAddress'";
+                $total++;
+            }
+        }
+
+
+        if ($total > 0) {
+            $query = "UPDATE tblstore SET $params WHERE Seller_ID = '$id'";
+            mysqli_query($connection, $query);
+
+            echo "<script>
+               window.location.replace('selleroverview.php');
+            </script>";
+        }
+    }
+
+?>

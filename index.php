@@ -320,56 +320,9 @@
   </body>
 
   <!-- FOoter-->
-
-  <nav class="navbar navbar-expand-lg primary-color">
-    <div class="container-fluid mx-5 my-2">
-      <a class="navbar-brand" href="index.php">S&R</a>
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="#f4fffd" class="bi bi-list" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"/>
-        </svg>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item mx-2">
-            <a class="nav-link" href="#">Dechie Sullano</a>
-          </li>
-          <li class="nav-item mx-2">
-            <a class="nav-link" href="#">Frenz Repunte</a>
-          </li>
-          <li class="nav-item mx-2">
-            <a class="nav-link" href="#">BSCS-2</a>
-          </li>
-        </ul>
-
-        <form class="d-flex w-50" role="search">
-          <div class="input-group">
-            <input class="form-control" type="search" placeholder="Search Product" aria-label="Search">
-            <span class="input-group-append">
-                <button class="btn btn-secondary search-button" type="submit">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="#92140c" class="bi bi-search" viewBox="0 0 16 16">
-                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"/>
-                    </svg>
-                </button>
-            </span>
-          </div>
-        </form>
-
-        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
-          <li class="nav-item mx-2">
-                <a class="nav-link" href = "https://www.facebook.com/" >Facebook</a>
-          </li>
-            <li class="nav-item mx-2">
-              <a class="nav-link" href = "https://www.instagram.com/" >Instagram</a>
-            </li>
-            <li class="nav-item mx-2">
-              <a class="nav-link" href = "https://www.youtube.com/" > Youtube </a>
-            </li>
-          </ul>
-      </div>
-    </div>
-</nav>
+<?php
+    include("includes/footer.php");
+?>
 
   
 </html>

@@ -168,7 +168,7 @@
 }
 ?>
 
-  <div class-"manageAppDiv" style="border bottom: 2 px black solid; border top: 2 px black solid;">
+  <div class="manageAppDiv" style="border bottom: 2 px black solid; border top: 2 px black solid;">
     <div class="btn label" id="manageSellerDiv" style ="font size: 4vw; text-aling:left">List Of Sellers</div>
 
     <div style="display: fkex; justify-content: center;" id ="manageSellerTable">

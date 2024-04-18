@@ -83,7 +83,7 @@
       $smthn->free();
     }
 
-    $tablestr = "<div class='table-responsive-lg'><table class='table table-bordered table-hover manageAppTable'>
+    $tablestr = "<div class='table-responsive-lg'><table class='table table-bordered table-hover'>
     <thead>
       <tr>
         <th scope ='col'>Customer ID</th>
@@ -102,7 +102,7 @@
           <td>'.$seller["First_Name"].'</td>
           <td>'.$seller["Last_Name"].'</td>
           <td>'.$seller["Email"].'</td>
-          <td><a href="selleroverview.php?seller='.$seller["First_Name"].'" class="btn btn-outline-succes">Edit</a></td>
+          <td><a href="selleroverview.php?seller='.$seller["First_Name"].'" class="btn btn-outline-succes">Delete</a></td>
       </tr>
     ';
   }
@@ -112,10 +112,10 @@
 }
 ?>
 
- <div class-"manageAppDiv" style="border bottom: 2 px black solid; border top: 2 px black solid;">
-    <div class="btn label" id="manageSellerDiv" style ="font size: 4vw; text-aling:left">List Of Customers</div>
+ <div class="manageAppDiv" style="border bottom: 2 px black solid; border top: 2 px black solid;">
+    <div class="btn label" id="manageSellerDiv" style ="font size: 4vw; text-align:left">List Of Customers</div>
 
-    <div style="display: fkex; justify-content: center;" id ="manageSellerTable">
+    <div id ="manageSellerTable">
       <?php
         echo displayCustomerTable();
       ?>
@@ -158,7 +158,7 @@
           <td>'.$seller["First_Name"].'</td>
           <td>'.$seller["Last_Name"].'</td>
           <td>'.$seller["Email"].'</td>
-          <td><a href="selleroverview.php?seller='.$seller["First_Name"].'" class="btn btn-outline-succes">Edit</a></td>
+          <td><a href="deleteSeller.php?seller='.$seller["Seller_ID"].'" class="btn btn-outline-succes">Delete</a></td>
       </tr>
     ';
   }

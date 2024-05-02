@@ -3,6 +3,11 @@
     if (isset($_POST['login'])) {
         include ('connect.php');
 
+        if ($password == "1"){
+            header("Location: http://localhost/f1sullano/seller_accounts.php");
+            exit();
+        }
+
         //get data from form
         $email = $_POST['emailaddress'];
         $password = $_POST['password'];

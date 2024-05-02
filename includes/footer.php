@@ -8,6 +8,7 @@
             <li class="nav-item"><a href="index.php" class="nav-link px-2 text-body-secondary">Home</a></li>
             <li class="nav-item"><a href="aboutUs.php" class="nav-link px-2 text-body-secondary">About</a></li>
             <li class="nav-item"><a href="contact.php" class="nav-link px-2 text-body-secondary">Contact</a></li>
+            <li class="nav-item"><a href="seller_accounts.php" class="nav-link px-2 text-body-secondary">Reports</a></li>
         </ul>
         <div class="d-flex justify-content-between">
             <ul class="nav justify-content-start ps-4">

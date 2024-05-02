@@ -49,6 +49,13 @@
                         <div class="invalid-feedback password-invalid">Password does not match.</div>
                       </div>
                     
+                      <div class="flex-wrapper">
+                        <label class="label-form1" for="gndr">Gender:</label>
+                        <input id="gndr" class="label-form1" type="radio" name="gender" value="male" checked> Male
+                        <input class="label-form1" type="radio" name="gender" value="female"> Female
+                        <input class="label-form1" type="radio" name="gender" value="other"> Other
+                    </div>
+                    
                     <button type="submit" class="btn btn-warning" name="register">Register</button>
                 </form>                
             </div>

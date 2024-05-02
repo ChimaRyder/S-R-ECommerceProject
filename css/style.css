@@ -4385,6 +4385,11 @@
     font-family: monospace;
   }
     
+  h2{
+    font-size: 30px;
+    font-weight: 500px;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+  }
 /* PRODUCTS PAGE
 .banner {
     width: 100%;

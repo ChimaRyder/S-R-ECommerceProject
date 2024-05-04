@@ -149,12 +149,12 @@
     if (isset($_POST["saveStoreSettings"])) {
         $params = "";
         $total = 0;
-        if (isset($_POST["storeName"])) {
+        if (!empty($_POST["storeName"])) {
             $storeName = $_POST["storeName"];
             $params .= "Store_Name = '$storeName'";
             $total++;
         }
-        if (isset($_POST["storeDescription"])) {
+        if (!empty($_POST["storeDescription"])) {
             if ($total > 0) {
                 $storeDescription = $_POST["storeDescription"];
                 $params .= ", Store_Description = '$storeDescription'";
@@ -165,7 +165,7 @@
                 $total++;
             }
         }
-        if (isset($_POST["storeAddress"])) {
+        if (!empty($_POST["storeAddress"])) {
             if ($total > 0) {
                 $storeAddress = $_POST["storeAddress"];
                 $params .= ", Store_Address = '$storeAddress'";

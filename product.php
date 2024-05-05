@@ -1,16 +1,17 @@
-<?php
-include ("connect.php");
-
-$product = $_GET['id'];
-$query = "SELECT Product_ID, Product_Image, Product_Name, Product_Description, Price, Stock, tblproduct.Store_ID, store.Store_Name, store.Store_Description, seller.First_Name, seller.Last_Name from tblproduct, tblstore as store, tblseller as seller WHERE Product_ID = '$product' AND tblproduct.Store_ID = store.Store_ID AND store.Seller_ID = seller.Seller_ID";
-$product = mysqli_fetch_assoc(mysqli_query($connection, $query));
-
-$image = "uploaded_images/".$product['Product_Image'];
-?>
 
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <?php
+    include ("connect.php");
+
+    $idprod = $_GET['id'];
+    $query = "SELECT Product_ID, Product_Image, Product_Name, Product_Description, Price, Stock, tblproduct.Store_ID, store.Store_Name, store.Store_Description, seller.First_Name, seller.Last_Name from tblproduct, tblstore as store, tblseller as seller WHERE Product_ID = '$idprod' AND tblproduct.Store_ID = store.Store_ID AND store.Seller_ID = seller.Seller_ID";
+    $product = mysqli_fetch_assoc(mysqli_query($connection, $query));
+
+    $proddispimage = "uploaded_images/".$product['Product_Image'];
+    ?>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?php echo $product['Product_Name']?> | S&R</title>
@@ -38,27 +39,20 @@ $image = "uploaded_images/".$product['Product_Image'];
         <div class="cols">
           <div class="left-col">
             <div class="big">
-              <span id="big-image" class="img" quickbeam="image" style="background-image: url(<?php echo $image?>)" data-src="//cdn.shopify.com/s/files/1/1047/6452/products/product_1024x1024.png?v=1446769025"></span>
-              <div id="banner-gallery" class="swipe">
-                <div class="swipe-wrap">
-                  <div style="background-image: url('//cdn.shopify.com/s/files/1/1047/6452/products/product_large.png?v=1446769025')"></div>
-                  <div style="background-image: url('//cdn.shopify.com/s/files/1/1047/6452/products/tricko1_large.jpg?v=1447104179')"></div>
-                  <div style="background-image: url('//cdn.shopify.com/s/files/1/1047/6452/products/tricko2_large.jpg?v=1447104180')"></div>
-                  <div style="background-image: url('//cdn.shopify.com/s/files/1/1047/6452/products/tricko3_large.jpg?v=1447104182')"></div>
-                </div>
-              </div>
+              <span id="big-image" class="img" quickbeam="image" style="<?php echo "background-image: url(".$proddispimage.");"?>" data-src="//cdn.shopify.com/s/files/1/1047/6452/products/product_1024x1024.png?v=1446769025"></span>
             </div>
           </div>
           <div class="right-col">
             <h1 itemprop="name"><?php echo $product['Product_Name']?></h1>
             <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
-              <meta itemprop="priceCurrency" content="USD">
+              <meta itemprop="priceCurrency" content="PHP">
               <link itemprop="availability" href="https://schema.org/InStock">
               <div class="price-shipping">
                 <div class="price" id="price-preview" quickbeam="price" quickbeam-price="800">
                     ₱<?php echo number_format($product['Price'], 2)?>
                 </div>
               </div>
+                <form method="post">
               <div class="swatches">
                 <div class="swatch clearfix" data-option-index="0">
                   <div class="header">Size</div>
@@ -97,7 +91,6 @@ $image = "uploaded_images/".$product['Product_Image'];
                     <div class="tooltip">Blue</div>
                     <input quickbeam="color" id="swatch-1-blue" type="radio" name="option-1" value="Blue" checked  />
                     <label for="swatch-1-blue" style="border-color: blue;">
-                      <img class="crossed-out" src="\images\prod-7.avif" />
                       <span style="background-color: blue;"></span>
                     </label>
                   </div>
@@ -105,7 +98,6 @@ $image = "uploaded_images/".$product['Product_Image'];
                     <div class="tooltip">Red</div>
                     <input quickbeam="color" id="swatch-1-red" type="radio" name="option-1" value="Red"  />
                     <label for="swatch-1-red" style="border-color: red;">
-                      <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
                       <span style="background-color: red;"></span>
                     </label>
                   </div>
@@ -113,14 +105,13 @@ $image = "uploaded_images/".$product['Product_Image'];
                     <div class="tooltip">Yellow</div>
                     <input quickbeam="color" id="swatch-1-yellow" type="radio" name="option-1" value="Yellow"  />
                     <label for="swatch-1-yellow" style="border-color: yellow;">
-                      <img class="crossed-out" src="//cdn.shopify.com/s/files/1/1047/6452/t/1/assets/soldout.png?10994296540668815886" />
                       <span style="background-color: yellow;"></span>
                     </label>
                   </div>
                 </div>
               </div>
                 <div class="d-flex flex-row">
-                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
+                    <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
                             onclick="this.parentNode.querySelector('input[type=number]').stepDown()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-dash" viewBox="0 0 16 16">
                             <path d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8"/>
@@ -128,9 +119,9 @@ $image = "uploaded_images/".$product['Product_Image'];
                     </button>
 
                     <input id="form1" min="0" name="quantity" value="1" type="number"
-                           class="form-control form-control-sm" style="width: 50px;" />
+                           class="form-control form-control-sm" style="width: 50px;" name="quantity"/>
 
-                    <button data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
+                    <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"
                             onclick="this.parentNode.querySelector('input[type=number]').stepUp()">
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-plus" viewBox="0 0 16 16">
                             <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4"/>
@@ -139,7 +130,8 @@ $image = "uploaded_images/".$product['Product_Image'];
 
                 </div>
 
-                <a class="btn btn-primary my-2 w-100 see-more" href="#" role="button">Add to Cart</a>
+                <button class="btn btn-primary my-2 w-100 see-more" type="submit" name="addCart">Add to Cart</button>
+                </form>
                 <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
                     <li class="nav-item" role="presentation">
                         <button class="nav-link text-black active" id="home-tab" data-bs-toggle="tab" data-bs-target="#description-tab-pane" type="button" role="tab" aria-controls="description-tab-pane" aria-selected="true">Description</button>
@@ -199,7 +191,7 @@ $image = "uploaded_images/".$product['Product_Image'];
                                 $stars
                             </div>
                             <div class='d-flex flex-row justify-content-between pt-2'>
-                                <a href='$simlink' class='btn btn-link stretched-link m-0 p-0'><h6>$price</h6></a>
+                                <a href=$simlink class='btn btn-link stretched-link m-0 p-0'><h6>$price</h6></a>
                                 <div>
                                     <i class='bi bi-heart-fill'></i>
                                     <i class='bi bi-cart-fill'></i>
@@ -224,6 +216,7 @@ $image = "uploaded_images/".$product['Product_Image'];
 
     <?php
     include ("includes/footer.php");
+    include ("addToCart.php");
     ?>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>

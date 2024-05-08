@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Style and Relax with S&R</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="css/style.css" rel="stylesheet">
 </head>
 <body>
@@ -19,11 +20,11 @@
     $sqlfind = "select Customer_ID, First_Name, Last_Name, Email from tblcustomer where First_Name like '%e%'";
     $smthn = mysqli_query($connection, $sqlfind);
 
-    $sellerArray = array();
+    $customerArray = array();
 
     if($smthn){
       while($row = $smthn->fetch_assoc()){
-        $sellerArray[] = $row;
+        $customerArray[] = $row;
       }
       $smthn->free();
     }
@@ -41,14 +42,14 @@
   <tbody>";
     
   
-  foreach($sellerArray as $seller){
+  foreach($customerArray as $customer){
     $tablestr .= '
       <tr>
-          <th scope="row">'.$seller["Customer_ID"].'</td>
-          <td>'.$seller["First_Name"].'</td>
-          <td>'.$seller["Last_Name"].'</td>
-          <td>'.$seller["Email"].'</td>
-          <td><a href="deleteCustomer.php?seller='.$seller["Customer_ID"].'" class="btn btn-outline-danger">Delete</a></td>
+          <th scope="row">'.$customer["Customer_ID"].'</td>
+          <td>'.$customer["First_Name"].'</td>
+          <td>'.$customer["Last_Name"].'</td>
+          <td>'.$customer["Email"].'</td>
+          <td><a href="deleteCustomer.php?seller='.$customer["Customer_ID"].'" class="btn btn-outline-danger">Delete</a></td>
       </tr>
     ';
   }
@@ -58,17 +59,71 @@
 }
 ?>
 
- <div class="manageAppDiv" style="border bottom: 2 px black solid; border top: 2 px black solid;">
+ <div style="border bottom: 2 px black solid; border top: 2 px black solid;">
  <br>
-    <div id="manageSellerDiv" style="color:#fec601; font-size: 50px; text-align: center;">List Of Customers whose First Names has a letter "e"</div>
+    <div  style="color:#fec601; font-size: 50px; text-align: center;">List Of Customers whose First Names has a letter "e"</div>
     <br>
-    <div id ="manageSellerTable">
       <?php
         echo displayCustomerTable();
       ?>
-    </div>
+
   </div>
 <br>
+
+
+<?php
+// Assuming you have already established a database connection
+
+function getTotalSellers() {
+    global $connection;
+
+    $sql = "SELECT COUNT(*) AS totalSellers FROM tblseller";
+    $result = mysqli_query($connection, $sql);
+
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        return $row['totalSellers'];
+    } else {
+        return 0;
+    }
+}
+
+$totalSellers = getTotalSellers();
+?>
+
+<?php
+
+function getTotalCustomers() {
+    global $connection;
+
+    $sql = "SELECT COUNT(*) AS totalCustomers FROM tblcustomer";
+    $result = mysqli_query($connection, $sql);
+
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        return $row['totalCustomers'];
+    } else {
+        return 0;
+    }
+}
+
+$totalCustomers = getTotalCustomers();
+?>
+   
+  
+   <div class="card text-white bg-warning mb-3" style="max-width: 18rem;">
+  <div class="card-header" style="font-size: 30px;">USER STATS</div>
+  <div class="card-body">
+  <h4 class="card-title" style="text-align: left;">Sellers: <?php echo $totalSellers; ?></h4>
+  <h4 class="card-title" style="text-align: left;">Customers: <?php echo $totalCustomers; ?></h4>
+  <h3 class="card-title" style="text-align: left; background-color: red;">Total: <?php echo $totalCustomers + $totalSellers; ?></h3>
+  </div>
+</div>
+<br>
+
+
+
+
 
 <?php
   function displaySellerTable() {
@@ -116,14 +171,12 @@
 }
 ?>
 
-  <div class="manageAppDiv" style="border bottom: 2 px black solid; border top: 2 px black solid;">
-    <div id="manageSellerDiv"style="color:#fec601; font-size: 50px; text-align: center;">List Of Sellers whose First Names starts with "S"</div>
+  <div style="border bottom: 2 px black solid; border top: 2 px black solid;">
+    <div style="color:#fec601; font-size: 50px; text-align: center;">List Of Sellers whose First Names starts with "S"</div>
     <br>
-    <div id ="manageSellerTable">
       <?php
         echo displaySellerTable();
       ?>
-    </div>
   </div>
 
     <h3 class="d-flex justify-content-center">Recently Added Projects</h3>

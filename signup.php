@@ -48,14 +48,23 @@
                         <input type="password" class="form-control" id="confirm_password" placeholder="Confirm Password" name="confirm_password" value="<?php echo isset($_POST["confirm_password"]) ? $_POST["confirm_password"] : ''; ?>" required>
                         <div class="invalid-feedback password-invalid">Password does not match.</div>
                       </div>
-                    
-                      <div class="flex-wrapper">
-                        <label class="label-form1" for="gndr">Gender:</label>
-                        <input id="gndr" class="label-form1" type="radio" name="gender" value="male" checked> Male
-                        <input class="label-form1" type="radio" name="gender" value="female"> Female
-                        <input class="label-form1" type="radio" name="gender" value="other"> Other
-                    </div>
-                    
+
+                   <div class="form-group">
+                       <label> Gender </label>
+                      <div class="form-check">
+                          <input class="form-check-input" type="radio" name="Gender" value="Male" id="Male" checked>
+                        <label class="form-check-label" for="Male">Male</label>
+                      </div>
+                       <div class="form-check">
+                           <input class="form-check-input" type="radio" name="Gender" value="Female" id="Female">
+                            <label class="form-check-label" for="Female">Female</label>
+                       </div>
+                       <div class="form-check">
+                           <input class="form-check-input" type="radio" name="Gender" value="Others" id="Others">
+                        <label class="form-check-label" for="Others">Others</label>
+                        </div>
+                   </div>
+
                     <button type="submit" class="btn btn-warning" name="register">Register</button>
                 </form>                
             </div>

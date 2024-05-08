@@ -16,14 +16,14 @@
   function displayCustomerTable() {
     global $connection;
 
-    $sqlfind = "select Customer_ID, First_Name, Last_Name, Email from tblcustomer where First_Name like '%e%'";
+    $sqlfind = "select Customer_ID, First_Name, Last_Name, Gender, Email from tblcustomer where Gender = 'Female'";
     $smthn = mysqli_query($connection, $sqlfind);
 
-    $sellerArray = array();
+    $customerArray = array();
 
     if($smthn){
       while($row = $smthn->fetch_assoc()){
-        $sellerArray[] = $row;
+        $customerArray[] = $row;
       }
       $smthn->free();
     }
@@ -34,6 +34,7 @@
         <th scope ='col'>Customer ID</th>
         <th scope ='col'>First Name</th>
         <th scope ='col'>Last Name</th>
+        <th scope='col'>Gender</th>
         <th scope ='col'>Email</th>
         <th scope ='col'>CRUD</th>
       </tr>
@@ -41,14 +42,15 @@
   <tbody>";
     
   
-  foreach($sellerArray as $seller){
+  foreach($customerArray as $customer){
     $tablestr .= '
       <tr>
-          <th scope="row">'.$seller["Customer_ID"].'</td>
-          <td>'.$seller["First_Name"].'</td>
-          <td>'.$seller["Last_Name"].'</td>
-          <td>'.$seller["Email"].'</td>
-          <td><a href="deleteCustomer.php?seller='.$seller["Customer_ID"].'" class="btn btn-outline-danger">Delete</a></td>
+          <th scope="row">'.$customer["Customer_ID"].'</td>
+          <td>'.$customer["First_Name"].'</td>
+          <td>'.$customer["Last_Name"].'</td>
+          <td>'.$customer["Gender"].'</td>
+          <td>'.$customer["Email"].'</td>
+          <td><a href="deleteCustomer.php?seller='.$customer["Customer_ID"].'" class="btn btn-outline-danger">Delete</a></td>
       </tr>
     ';
   }
@@ -58,16 +60,14 @@
 }
 ?>
 
- <div class="manageAppDiv" style="border bottom: 2 px black solid; border top: 2 px black solid;">
  <br>
-    <div id="manageSellerDiv" style="color:#fec601; font-size: 50px; text-align: center;">List Of Customers whose First Names has a letter "e"</div>
+    <div id="manageCustomerDiv" style="color:#fec601; font-size: 50px; text-align: center;">List Of Female Customers</div>
     <br>
-    <div id ="manageSellerTable">
+    <div id ="manageCustomerTable">
       <?php
         echo displayCustomerTable();
       ?>
     </div>
-  </div>
 <br>
 
 <?php
@@ -116,7 +116,6 @@
 }
 ?>
 
-  <div class="manageAppDiv" style="border bottom: 2 px black solid; border top: 2 px black solid;">
     <div id="manageSellerDiv"style="color:#fec601; font-size: 50px; text-align: center;">List Of Sellers whose First Names starts with "S"</div>
     <br>
     <div id ="manageSellerTable">
@@ -124,9 +123,8 @@
         echo displaySellerTable();
       ?>
     </div>
-  </div>
 
-    <h3 class="d-flex justify-content-center">Recently Added Projects</h3>
+    <h3 class="d-flex justify-content-center">Recently Added Products</h3>
 
     <table class="table">
         <thead>
@@ -169,7 +167,8 @@
         ?>
         </tbody>
     </table>
-  
+
+    <a href="generatePDF.php" class="btn btn-primary see-more my-2">Generate PDF</a>
    
   </body>
 

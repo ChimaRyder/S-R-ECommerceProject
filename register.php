@@ -10,6 +10,7 @@
 
         $fname = $_POST['fname'];
         $lname = $_POST['lname'];
+        $gender = $_POST['Gender'];
 
         $sqlfind = "select * from tblcustomer where Email = '$emailaddress' ";
 
@@ -18,7 +19,7 @@
         if ($count_email == 0 && password_verify($confirm_password, $password)) {
 
             //query
-            $sql = "insert into tblcustomer(First_Name, Last_Name, Email, Password) values('$fname', '$lname', '$emailaddress', '$password')";
+            $sql = "insert into tblcustomer(First_Name, Last_Name, Gender, Email, Password) values('$fname', '$lname','$gender','$emailaddress', '$password')";
             mysqli_query($connection, $sql);
 
             $sqlsearch = "select * from tblcustomer where Email = '$emailaddress' ";

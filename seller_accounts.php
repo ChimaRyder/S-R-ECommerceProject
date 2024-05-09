@@ -14,61 +14,63 @@
 <body>
     <?php
     include ("includes/header.php");
-    function displayCustomerTable() {
-      global $connection;
-  
-      $sqlfind = "select Customer_ID, First_Name, Last_Name, Gender, Email from tblcustomer where Gender = 'Female'";
-      $smthn = mysqli_query($connection, $sqlfind);
-  
-      $customerArray = array();
-  
-      if($smthn){
-        while($row = $smthn->fetch_assoc()){
-          $customerArray[] = $row;
-        }
-        $smthn->free();
+
+  function displayCustomerTable() {
+    global $connection;
+
+    $sqlfind = "select Customer_ID, First_Name, Last_Name, Gender, Email from tblcustomer where Gender = 'Female'";
+    $smthn = mysqli_query($connection, $sqlfind);
+
+    $customerArray = array();
+
+    if($smthn){
+      while($row = $smthn->fetch_assoc()){
+        $customerArray[] = $row;
       }
-  
-      $tablestr = "<div class='table-responsive-lg'><table class='table table-striped table-dark'>
-      <thead>
-        <tr>
-          <th scope ='col'>Customer ID</th>
-          <th scope ='col'>First Name</th>
-          <th scope ='col'>Last Name</th>
-          <th scope='col'>Gender</th>
-          <th scope ='col'>Email</th>
-          <th scope ='col'>CRUD</th>
-        </tr>
-    </thead>
-    <tbody>";
-      
-    
-    foreach($customerArray as $customer){
-      $tablestr .= '
-        <tr>
-            <th scope="row">'.$customer["Customer_ID"].'</td>
-            <td>'.$customer["First_Name"].'</td>
-            <td>'.$customer["Last_Name"].'</td>
-            <td>'.$customer["Gender"].'</td>
-            <td>'.$customer["Email"].'</td>
-            <td><a href="deleteCustomer.php?seller='.$customer["Customer_ID"].'" class="btn btn-outline-danger">Delete</a></td>
-        </tr>
-      ';
+      $smthn->free();
     }
-    $tablestr .= '</tbody></table></div>';
+
+    $tablestr = "<div class='table-responsive-lg'><table class='table table-striped table-dark'>
+    <thead>
+      <tr>
+        <th scope ='col'>Customer ID</th>
+        <th scope ='col'>First Name</th>
+        <th scope ='col'>Last Name</th>
+        <th scope='col'>Gender</th>
+        <th scope ='col'>Email</th>
+        <th scope ='col'>CRUD</th>
+      </tr>
+  </thead>
+  <tbody>";
+    
   
-    return $tablestr;
+  foreach($customerArray as $customer){
+    $tablestr .= '
+      <tr>
+          <th scope="row">'.$customer["Customer_ID"].'</td>
+          <td>'.$customer["First_Name"].'</td>
+          <td>'.$customer["Last_Name"].'</td>
+          <td>'.$customer["Gender"].'</td>
+          <td>'.$customer["Email"].'</td>
+          <td><a href="deleteCustomer.php?seller='.$customer["Customer_ID"].'" class="btn btn-outline-danger">Delete</a></td>
+      </tr>
+    ';
   }
-  ?>
-  
-   <br>
-      <div id="manageCustomerDiv" style="color:#fec601; font-size: 50px; text-align: center;">List Of Female Customers</div>
-      <br>
-      <div id ="manageCustomerTable">
-        <?php
-          echo displayCustomerTable();
-        ?>
-      </div>
+  $tablestr .= '</tbody></table></div>';
+
+  return $tablestr;
+}
+?>
+
+ <br>
+    <div id="manageCustomerDiv" style="color:#fec601; font-size: 50px; text-align: center;">List Of Female Customers</div>
+    <br>
+    <div id ="manageCustomerTable">
+      <?php
+        echo displayCustomerTable();
+      ?>
+    </div>
+<br>
 
 <?php
   function displaySellerTable() {
@@ -124,7 +126,7 @@
       ?>
   </div>
 
-    <h3 class="d-flex justify-content-center">Recently Added Projects</h3>
+    <h3 class="d-flex justify-content-center">Recently Added Products</h3>
 
     <table class="table">
         <thead>
@@ -321,6 +323,9 @@ $totalOthers = getTotalGender('Others');
 </script>
 
 
+
+    <a href="generatePDF.php" class="btn btn-primary see-more my-2">Generate PDF</a>
+   
   </body>
 
   <!-- FOoter-->

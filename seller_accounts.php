@@ -14,63 +14,61 @@
 <body>
     <?php
     include ("includes/header.php");
-
-  function displayCustomerTable() {
-    global $connection;
-
-    $sqlfind = "select Customer_ID, First_Name, Last_Name, Gender, Email from tblcustomer where Gender = 'Female'";
-    $smthn = mysqli_query($connection, $sqlfind);
-
-    $customerArray = array();
-
-    if($smthn){
-      while($row = $smthn->fetch_assoc()){
-        $customerArray[] = $row;
-      }
-      $smthn->free();
-    }
-
-    $tablestr = "<div class='table-responsive-lg'><table class='table table-striped table-dark'>
-    <thead>
-      <tr>
-        <th scope ='col'>Customer ID</th>
-        <th scope ='col'>First Name</th>
-        <th scope ='col'>Last Name</th>
-        <th scope='col'>Gender</th>
-        <th scope ='col'>Email</th>
-        <th scope ='col'>CRUD</th>
-      </tr>
-  </thead>
-  <tbody>";
-    
+    function displayCustomerTable() {
+      global $connection;
   
-  foreach($customerArray as $customer){
-    $tablestr .= '
-      <tr>
-          <th scope="row">'.$customer["Customer_ID"].'</td>
-          <td>'.$customer["First_Name"].'</td>
-          <td>'.$customer["Last_Name"].'</td>
-          <td>'.$customer["Gender"].'</td>
-          <td>'.$customer["Email"].'</td>
-          <td><a href="deleteCustomer.php?seller='.$customer["Customer_ID"].'" class="btn btn-outline-danger">Delete</a></td>
-      </tr>
-    ';
+      $sqlfind = "select Customer_ID, First_Name, Last_Name, Gender, Email from tblcustomer where Gender = 'Female'";
+      $smthn = mysqli_query($connection, $sqlfind);
+  
+      $customerArray = array();
+  
+      if($smthn){
+        while($row = $smthn->fetch_assoc()){
+          $customerArray[] = $row;
+        }
+        $smthn->free();
+      }
+  
+      $tablestr = "<div class='table-responsive-lg'><table class='table table-striped table-dark'>
+      <thead>
+        <tr>
+          <th scope ='col'>Customer ID</th>
+          <th scope ='col'>First Name</th>
+          <th scope ='col'>Last Name</th>
+          <th scope='col'>Gender</th>
+          <th scope ='col'>Email</th>
+          <th scope ='col'>CRUD</th>
+        </tr>
+    </thead>
+    <tbody>";
+      
+    
+    foreach($customerArray as $customer){
+      $tablestr .= '
+        <tr>
+            <th scope="row">'.$customer["Customer_ID"].'</td>
+            <td>'.$customer["First_Name"].'</td>
+            <td>'.$customer["Last_Name"].'</td>
+            <td>'.$customer["Gender"].'</td>
+            <td>'.$customer["Email"].'</td>
+            <td><a href="deleteCustomer.php?seller='.$customer["Customer_ID"].'" class="btn btn-outline-danger">Delete</a></td>
+        </tr>
+      ';
+    }
+    $tablestr .= '</tbody></table></div>';
+  
+    return $tablestr;
   }
-  $tablestr .= '</tbody></table></div>';
-
-  return $tablestr;
-}
-?>
-
- <br>
-    <div id="manageCustomerDiv" style="color:#fec601; font-size: 50px; text-align: center;">List Of Female Customers</div>
-    <br>
-    <div id ="manageCustomerTable">
-      <?php
-        echo displayCustomerTable();
-      ?>
-    </div>
-<br>
+  ?>
+  
+   <br>
+      <div id="manageCustomerDiv" style="color:#fec601; font-size: 50px; text-align: center;">List Of Female Customers</div>
+      <br>
+      <div id ="manageCustomerTable">
+        <?php
+          echo displayCustomerTable();
+        ?>
+      </div>
 
 <?php
   function displaySellerTable() {
@@ -126,7 +124,7 @@
       ?>
   </div>
 
-    <h3 class="d-flex justify-content-center">Recently Added Products</h3>
+    <h3 class="d-flex justify-content-center">Recently Added Projects</h3>
 
     <table class="table">
         <thead>
@@ -210,24 +208,47 @@ $totalCustomers = getTotalCustomers();
 
 <?php
 
-function getTotalGender($gender) {
+function getTotalCustomerGender($gender) {
     global $connection;
 
-    $sql = "SELECT COUNT(*) AS totalGender FROM tblcustomer WHERE Gender = '$gender'";
+    $sql = "SELECT COUNT(*) AS totalCustomerGender FROM tblcustomer WHERE Gender = '$gender'";
     $result = mysqli_query($connection, $sql);
 
     if ($result) {
         $row = mysqli_fetch_assoc($result);
-        return $row['totalGender'];
+        return $row['totalCustomerGender'];
     } else {
         return 0;
     }
 }
 
-$totalMale = getTotalGender('Male');
-$totalFemale = getTotalGender('Female');
-$totalOthers = getTotalGender('Others');
+$totalCustomerMale = getTotalCustomerGender('Male');
+$totalCustomerFemale = getTotalCustomerGender('Female');
+$totalCustomerOthers = getTotalCustomerGender('Others');
 ?>
+
+<?php
+
+function getTotalSellerGender($gender) {
+    global $connection;
+
+    $sql = "SELECT COUNT(*) AS totalSellerGender FROM tblseller WHERE Gender = '$gender'";
+    $result = mysqli_query($connection, $sql);
+
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        return $row['totalSellerGender'];
+    } else {
+        return 0;
+    }
+}
+
+$totalSellerMale = getTotalSellerGender('Male');
+$totalSellerFemale = getTotalSellerGender('Female');
+$totalSellerOthers = getTotalSellerGender('Others');
+?>
+
+
 
 <div class="container" style="display: flex;">
     <div class="row" style="flex: 1;">
@@ -256,15 +277,15 @@ $totalOthers = getTotalGender('Others');
                 <tbody>
                     <tr>
                         <td>Male</td>
-                        <td><?php echo $totalMale; ?></td>
+                        <td><?php echo $totalCustomerMale + $totalSellerMale; ?></td>
                     </tr>
                     <tr>
                         <td>Female</td>
-                        <td><?php echo $totalFemale; ?></td>
+                        <td><?php echo $totalCustomerFemale + $totalSellerFemale; ?></td>
                     </tr>
                     <tr>
                         <td>Others</td>
-                        <td><?php echo $totalOthers; ?></td>
+                        <td><?php echo $totalCustomerOthers + $totalSellerOthers; ?></td>
                     </tr>
                 </tbody>
             </table>
@@ -298,7 +319,7 @@ $totalOthers = getTotalGender('Others');
     var genderPieData = {
         labels: ["Male", "Female", "Others"],
         datasets: [{
-            data: [<?php echo $totalMale; ?>, <?php echo $totalFemale; ?>, <?php echo $totalOthers; ?>],
+            data: [<?php echo $totalCustomerMale + $totalSellerMale; ?>, <?php echo $totalCustomerFemale + $totalSellerFemale; ?>, <?php echo $totalCustomerOthers + $totalSellerOthers; ?>],
             backgroundColor: ["#007bff", "#f50057", "#ffc107"]
         }]
     };
@@ -323,9 +344,6 @@ $totalOthers = getTotalGender('Others');
 </script>
 
 
-
-    <a href="generatePDF.php" class="btn btn-primary see-more my-2">Generate PDF</a>
-   
   </body>
 
   <!-- FOoter-->

@@ -7,7 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Style and Relax with S&R</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="css/style.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <?php
@@ -116,13 +118,13 @@
 }
 ?>
 
-    <div id="manageSellerDiv"style="color:#fec601; font-size: 50px; text-align: center;">List Of Sellers whose First Names starts with "S"</div>
+  <div style="border bottom: 2 px black solid; border top: 2 px black solid;">
+    <div style="color:#fec601; font-size: 50px; text-align: center;">List Of Sellers whose First Names starts with "S"</div>
     <br>
-    <div id ="manageSellerTable">
       <?php
         echo displaySellerTable();
       ?>
-    </div>
+  </div>
 
     <h3 class="d-flex justify-content-center">Recently Added Products</h3>
 
@@ -167,6 +169,160 @@
         ?>
         </tbody>
     </table>
+  
+    <?php
+
+function getTotalSellers() {
+    global $connection;
+
+    $sql = "SELECT COUNT(*) AS totalSellers FROM tblseller";
+    $result = mysqli_query($connection, $sql);
+
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        return $row['totalSellers'];
+    } else {
+        return 0;
+    }
+}
+
+$totalSellers = getTotalSellers();
+?>
+
+<?php
+
+function getTotalCustomers() {
+    global $connection;
+
+    $sql = "SELECT COUNT(*) AS totalCustomers FROM tblcustomer";
+    $result = mysqli_query($connection, $sql);
+
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        return $row['totalCustomers'];
+    } else {
+        return 0;
+    }
+}
+
+$totalCustomers = getTotalCustomers();
+?>
+
+<?php
+
+function getTotalGender($gender) {
+    global $connection;
+
+    $sql = "SELECT COUNT(*) AS totalGender FROM tblcustomer WHERE Gender = '$gender'";
+    $result = mysqli_query($connection, $sql);
+
+    if ($result) {
+        $row = mysqli_fetch_assoc($result);
+        return $row['totalGender'];
+    } else {
+        return 0;
+    }
+}
+
+$totalMale = getTotalGender('Male');
+$totalFemale = getTotalGender('Female');
+$totalOthers = getTotalGender('Others');
+?>
+
+<div class="container" style="display: flex;">
+    <div class="row" style="flex: 1;">
+        <div class="col-md-6">
+            <h3 class="text-center">User Statistics</h3>
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <td>Sellers</td>
+                        <td><?php echo $totalSellers; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Customers</td>
+                        <td><?php echo $totalCustomers; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Total</td>
+                        <td><?php echo $totalCustomers + $totalSellers; ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-md-6" style="flex: 1;">
+            <h3 class="text-center">Gender Statistics</h3>
+            <table class="table table-striped">
+                <tbody>
+                    <tr>
+                        <td>Male</td>
+                        <td><?php echo $totalMale; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Female</td>
+                        <td><?php echo $totalFemale; ?></td>
+                    </tr>
+                    <tr>
+                        <td>Others</td>
+                        <td><?php echo $totalOthers; ?></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5" style="display: flex;">
+    <div class="row" style="flex: 1;">
+        <div class="col-md-6">
+            <canvas id="userPieChart" width="500" height="500"></canvas>
+        </div>
+        <div class="col-md-6">
+            <canvas id="genderPieChart" width="500" height="500"></canvas>
+        </div>
+    </div>
+</div>
+<br>
+
+<script>
+    // User Pie Chart Data
+    var userPieData = {
+        labels: ["Sellers", "Customers"],
+        datasets: [{
+            data: [<?php echo $totalSellers; ?>, <?php echo $totalCustomers; ?>],
+            backgroundColor: ["#ffc107", "#007bff"]
+        }]
+    };
+
+    // Gender Pie Chart Data
+    var genderPieData = {
+        labels: ["Male", "Female", "Others"],
+        datasets: [{
+            data: [<?php echo $totalMale; ?>, <?php echo $totalFemale; ?>, <?php echo $totalOthers; ?>],
+            backgroundColor: ["#007bff", "#f50057", "#ffc107"]
+        }]
+    };
+
+    // Render User Pie Chart
+    var userPieChart = new Chart(document.getElementById('userPieChart'), {
+        type: 'pie',
+        data: userPieData,
+        options: {
+            responsive: false
+        }
+    });
+
+    // Render Gender Pie Chart
+    var genderPieChart = new Chart(document.getElementById('genderPieChart'), {
+        type: 'pie',
+        data: genderPieData,
+        options: {
+            responsive: false
+        }
+    });
+</script>
+
+
 
     <a href="generatePDF.php" class="btn btn-primary see-more my-2">Generate PDF</a>
    

@@ -7,7 +7,7 @@
         $totalprice = $quantity * $product['Price'];
 
         $addquery = "INSERT into tblcart_item(Product_ID, Cart_ID, Quantity, Total_Item_Price) values($prod_id, $cart_id, $quantity, $totalprice)";
-        $updatequery = "UPDATE tblcart SET Total_Quantity = (SELECT SUM(Quantity) from tblcart_item WHERE Cart_ID = '$cart_id'), Total_Price = (SELECT SUM(Total_Item_Price) from tblcart_item WHERE Cart_ID = '$cart_id')";
+        $updatequery = "UPDATE tblcart SET Total_Quantity = (SELECT SUM(Quantity) from tblcart_item WHERE Cart_ID = '$cart_id' AND is_Deleted = 'NO'), Total_Price = (SELECT SUM(Total_Item_Price) from tblcart_item WHERE Cart_ID = '$cart_id' AND is_Deleted = 'NO')";
 
         mysqli_query($connection, $addquery);
         mysqli_query($connection, $updatequery);

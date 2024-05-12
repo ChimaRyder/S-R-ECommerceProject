@@ -79,7 +79,8 @@ $query = "SELECT Product_ID, Product_Name, seller.First_Name, seller.Last_Name, 
             from tblproduct, tblstore, tblseller as seller 
             WHERE tblproduct.Store_ID = tblstore.Store_ID 
             AND seller.Seller_ID = tblstore.Seller_ID
-            ORDER BY Date_Created";
+            AND is_Deleted = 'NO' 
+            ORDER BY Date_Created DESC";
 $smthn = mysqli_query($connection, $query);
 
 while ($row = mysqli_fetch_assoc($smthn)) {

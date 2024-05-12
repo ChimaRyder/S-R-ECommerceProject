@@ -113,11 +113,12 @@ if (isset($_SESSION["Customer_ID"])){
                                         </thead>
                                         <tbody>
                                         <?php
-                                            $query = "SELECT product.Product_Name, product.Product_Image, cartitem.Quantity, cartitem.Total_Item_Price from tblproduct as product, tblcart as cart, tblcart_item as cartitem, tblcustomer WHERE cartitem.Product_ID = product.Product_ID AND tblcustomer.Customer_ID = cart.Customer_ID AND cart.Cart_ID = cartitem.Cart_ID AND tblcustomer.Customer_ID = '$id'";
+                                            $query = "SELECT cartitem.Cart_ID, cartitem.CartItem_ID, product.Product_Name, product.Product_Image, cartitem.Quantity, cartitem.Total_Item_Price from tblproduct as product, tblcart as cart, tblcart_item as cartitem, tblcustomer WHERE cartitem.Product_ID = product.Product_ID AND tblcustomer.Customer_ID = cart.Customer_ID AND cart.Cart_ID = cartitem.Cart_ID AND tblcustomer.Customer_ID = '$id' AND product.is_Deleted = 'NO' AND cartitem.is_Deleted ='NO'";
                                             $res = mysqli_query($connection, $query);
 
                                             if ($res) {
                                                 while ($row = mysqli_fetch_assoc($res)) {
+                                                   $removelink = "removeFromCart.php?id=".$row['CartItem_ID']."&cart=".$row['Cart_ID'];
                                                    $image = "uploaded_images/".$row['Product_Image'];
                                                    $name = $row['Product_Name'];
                                                    $itemQ = $row['Quantity'];
@@ -126,9 +127,11 @@ if (isset($_SESSION["Customer_ID"])){
                                                     echo "
                                                     <tr>
                                                         <td>
+                                                        <a href=$removelink class='btn btn-link'>
                                                             <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='currentColor' class='bi bi-dash' viewBox='0 0 16 16'>
-                                                                <path d='M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8'/>
-                                                            </svg>
+                                                                <path d='M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8'></path>
+                                                            </svg> 
+                                                        </a>
                                                         </td>
                                                         <td>
                                                             <div class='d-flex align-items-center'>
@@ -151,7 +154,7 @@ if (isset($_SESSION["Customer_ID"])){
                                                                     </svg>
                                                                 </button>
 
-                                                                <input id='form1' min='0' name='quantity' type='number' class='form-control form-control-sm' style='width: 50px;' value='$itemQ' />
+                                                                <input id='form1' min='1' name='quantity' type='number' class='form-control form-control-sm' style='width: 50px;' value='$itemQ'/>
 
                                                                 <button data-mdb-button-init data-mdb-ripple-init class='btn btn-link px-2' onclick=this.parentNode.querySelector('input[type=number]').stepUp()>
                                                                     <svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='currentColor' class='bi bi-plus' viewBox='0 0 16 16'>

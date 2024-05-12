@@ -6,7 +6,7 @@
     include ("connect.php");
 
     $idprod = $_GET['id'];
-    $query = "SELECT Product_ID, Product_Image, Product_Name, Product_Description, Price, Stock, tblproduct.Store_ID, store.Store_Name, store.Store_Description, seller.First_Name, seller.Last_Name from tblproduct, tblstore as store, tblseller as seller WHERE Product_ID = '$idprod' AND tblproduct.Store_ID = store.Store_ID AND store.Seller_ID = seller.Seller_ID";
+    $query = "SELECT Product_ID, Product_Image, Product_Name, Product_Description, Price, Stock, tblproduct.Store_ID, store.Store_Name, store.Store_Description, seller.First_Name, seller.Last_Name from tblproduct, tblstore as store, tblseller as seller WHERE Product_ID = '$idprod' AND tblproduct.Store_ID = store.Store_ID AND store.Seller_ID = seller.Seller_ID AND tblproduct.is_Deleted = 'NO'";
     $product = mysqli_fetch_assoc(mysqli_query($connection, $query));
 
     $proddispimage = "uploaded_images/".$product['Product_Image'];
@@ -159,7 +159,7 @@
          <?php
              $storeID = $product['Store_ID'];
              $prodID = $product['Product_ID'];
-             $query = "SELECT Product_ID, Product_Name, Product_Image, Product_Description, Average_Rating, Price from tblproduct WHERE Store_ID = '$storeID' AND Product_ID != '$prodID' LIMIT 4";
+             $query = "SELECT Product_ID, Product_Name, Product_Image, Product_Description, Average_Rating, Price from tblproduct WHERE Store_ID = '$storeID' AND Product_ID != '$prodID' AND is_Deleted = 'NO' LIMIT 4";
              $similar = mysqli_query($connection, $query);
 
              if ($similar) {

@@ -3,6 +3,6 @@
 
     $id = $_GET["id"];
 
-    $query = "DELETE from tblproduct WHERE Product_ID = '$id'";
+    $query = "UPDATE tblproduct SET is_Deleted = 'YES' WHERE Product_ID = '$id'";
     mysqli_query($connection, $query);
     header("Location: sellerProducts.php");

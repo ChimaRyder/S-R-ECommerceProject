@@ -17,7 +17,7 @@
     function displayCustomerTable() {
       global $connection;
   
-      $sqlfind = "select Customer_ID, First_Name, Last_Name, Gender, Email from tblcustomer where Gender = 'Female'";
+      $sqlfind = "select Customer_ID, First_Name, Last_Name, Gender, Email from tblcustomer where Gender = 'Female' AND is_Deleted = 'NO'";
       $smthn = mysqli_query($connection, $sqlfind);
   
       $customerArray = array();
@@ -74,7 +74,7 @@
   function displaySellerTable() {
     global $connection;
 
-    $sqlfind = "select Seller_ID, First_Name, Last_Name, Email from tblseller where First_Name like 'S%'";
+    $sqlfind = "select Seller_ID, First_Name, Last_Name, Email from tblseller where First_Name like 'S%' AND is_Deleted = 'NO'";
     $smthn = mysqli_query($connection, $sqlfind);
 
     $sellerArray = array();
@@ -142,7 +142,8 @@
             from tblproduct, tblstore, tblseller as seller 
             WHERE tblproduct.Store_ID = tblstore.Store_ID 
             AND seller.Seller_ID = tblstore.Seller_ID
-            ORDER BY Date_Created";
+            AND tblproduct.is_Deleted = 'NO'
+            ORDER BY Date_Created DESC";
         $res = mysqli_query($connection, $query);
 
         $i = 0;
@@ -344,14 +345,11 @@ $totalSellerOthers = getTotalSellerGender('Others');
 </script>
 
 
+    <!-- FOoter-->
+    <?php
+    include("includes/footer.php");
+    ?>
   </body>
 
-  <!-- FOoter-->
 
-<footer style = "position: relative; min-height: 25vh;">
-<?php
-    include("includes/footer.php");
-?>
-</footer>
-  
 </html>

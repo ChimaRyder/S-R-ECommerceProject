@@ -20,7 +20,7 @@
 
     <?php
     $search = $_GET["search"];
-    $query = "SELECT Product_ID, Product_Name, Product_Image, Product_Description, Average_Rating, Price from tblproduct WHERE Product_Name LIKE '%$search%'";
+    $query = "SELECT Product_ID, Product_Name, Product_Image, Product_Description, Average_Rating, Price from tblproduct WHERE Product_Name LIKE '%$search%' AND is_Deleted = 'NO'";
     $similar = mysqli_query($connection, $query);
     $foundres = mysqli_num_rows($similar);
 

@@ -13,8 +13,8 @@
         $password = $_POST['password'];
 
         //search for users with same email
-        $sqlfind = "select * from tblcustomer where Email = '$email' ";
-        $sqlfindseller = "select * from tblseller where Email = '$email' ";
+        $sqlfind = "select * from tblcustomer where Email = '$email' AND is_Deleted = 'NO'";
+        $sqlfindseller = "select * from tblseller where Email = '$email' AND is_Deleted = 'NO'";
         $result = mysqli_query($connection, $sqlfind);
         $sellerresult = mysqli_query($connection, $sqlfindseller);
 

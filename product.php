@@ -118,7 +118,7 @@
                         </svg>
                     </button>
 
-                    <input id="form1" min="0" name="quantity" value="1" type="number"
+                    <input id="form1" min="1" name="quantity" value="1" type="number"
                            class="form-control form-control-sm" style="width: 50px;" name="quantity"/>
 
                     <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-link px-2"

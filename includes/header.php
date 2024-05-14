@@ -62,7 +62,7 @@ if (isset($_SESSION["Customer_ID"])){
                     <li class="nav-item mx-2">
                         <?php
                         if(isset($_SESSION["Customer_ID"])){
-                            $link = "dashboard.php";
+                            $link = "customerHome.php";
                         } else if (isset($_SESSION["Seller_ID"])){
                             $link = "selleroverview.php";
                         } else {

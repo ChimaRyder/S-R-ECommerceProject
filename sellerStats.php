@@ -47,7 +47,7 @@
     <div class="row w-100">
 
         <div class="col-2 d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary ms-2" style="width: 280px; height: 80vh;">
-            <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+            <a href="selleroverview.php" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
             <span class="fs-4">
                 <?php
                 $sqlstorename = "select Store_Name from tblstore where Seller_ID='$id'";
@@ -74,7 +74,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="nav-link link-body-emphasis text-black">
+                    <a href="sellerOrders.php" class="nav-link link-body-emphasis text-black">
                         <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
                         Orders
                     </a>

@@ -43,6 +43,23 @@
     </symbol>
 </svg>
 
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+    </svg>
+    Your product has been added.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
+    </button>
+</div>
+
+<script>
+    const productCreated = window.sessionStorage.getItem('productCreated');
+
+    if (productCreated === 'true') {
+        document.querySelector('.alert').style.display = 'block';
+        window.sessionStorage.removeItem('productCreated');
+    }
+</script>
 
 <div class="row w-100">
 
@@ -74,8 +91,8 @@
                 </a>
             </li>
             <li>
-                <a href="sellerOrders.php" class="nav-link link-body-emphasis text-black">
-                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+                <a href="sellerOrders.php" class="nav-link link-body-emphasis da active">
+                    <svg class="bi pe-none me-2 text-white" width="16" height="16"><use xlink:href="#table"/></svg>
                     Orders
                 </a>
             </li>
@@ -95,8 +112,8 @@
                 </div>
                 <div class="collapse ps-3" id="storeContent" >
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="addProduct.php" class="nav-link rounded da active">
-                                <svg class="bi pe-none me-2 text-white" width="16" height="16"><use xlink:href="#grid"/></svg>
+                        <li><a href="addProduct.php" class="nav-link rounded text-black">
+                                <svg class="bi pe-none me-2 text-black" width="16" height="16"><use xlink:href="#grid"/></svg>
                                 Add a Product</a></li>
                     </ul>
                 </div>
@@ -122,34 +139,63 @@
         </div>
     </div>
 
-    <div class="col px-5 ">
-            <h1 class="my-2">Add a Product</h1>
-            <form class="mx-2" method="POST" enctype="multipart/form-data">
-                <div class="mb-3">
-                    <label for="productName" class="form-label">Product Name</label>
-                    <input type="text" class="form-control" id="productName" name="product_name" required>
-                </div>
-                <div class="mb-3">
-                    <label for="productDescription" class="form-label">Product Description</label>
-                    <textarea class="form-control" id="productDescription" rows="3" name="product_description" required></textarea>
-                </div>
-                <div class="row">
-                    <div class="col mb-3">
-                        <label for="price" class="form-label">Price</label>
-                        <input type="number" step="any" class="form-control" id="price" name="price" required>
-                    </div>
-                    <div class="col mb-3">
-                        <label for="stock" class="form-label">Stock</label>
-                        <input type="number" class="form-control" id="stock" name="stock" required>
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="product_image" class="form-label">Product Image</label>
-                    <input type="file" class="form-control" id="product_image" name="product_image" required>
-                </div>
-                <button type="submit" class="btn btn-primary" name="add_product">Add Product</button>
-            </form>
-        </div>
+    <div class="col">
+        <table class="table align-middle mb-0 bg-white">
+            <thead class="bg-light">
+            <tr>
+                <th class="fw-bold">Order No.</th>
+                <th class="fw-bold">Customer Name</th>
+                <th class="fw-bold">Price</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+                $store = mysqli_fetch_assoc(mysqli_query($connection, "select Store_ID from tblstore where Seller_ID='$id'"))['Store_ID'];
+                $order = $connection->prepare("SELECT orders.Order_ID, customer.First_Name, customer.Last_Name, SUM(orderitem.Total_OrderItem_Price) as Price from tblproduct as product, tblorder as orders, tblcustomer as customer, tblorder_item as orderitem WHERE product.Store_ID = ? AND orderitem.Product_ID = product.Product_ID AND orders.Order_ID = orderitem.Order_ID AND customer.Customer_ID = orders.Customer_ID ORDER BY orders.Order_Date DESC");
+                $order->bind_param("i",$store);
+                $order->execute();
+                $res = $order->get_result();
+
+                if ($res) {
+                    if (mysqli_num_rows($res)>0) {
+
+                        while ($row=mysqli_fetch_assoc($res)){
+                           $orderid = $row['Order_ID'];
+                           $name = $row['First_Name']." ".$row['Last_Name'];
+                           $price = "P".number_format($row['Price'], 2);
+                           $link = "checkOrder.php?id=".$orderid;
+
+
+
+                            echo "
+                            
+            <tr>
+                <td>
+                    <p class='fw-normal mb-1'>$orderid</p>
+                </td>
+                <td>
+                    <p class='fw-normal mb-1'>$name</p>
+                </td>
+                <td>
+                    <p class='fw-normal mb-1'>$price</p>
+                </td>
+                <td>
+                    <a href=$link role='button' class='btn btn-primary see-more btn-sm btn-rounded fw-bold'>
+                        View
+                    </a>
+                </td>
+            </tr>
+                            
+                            ";
+                        }
+                    }
+                }
+            ?>
+
+            </tbody>
+        </table>
+    </div>
 </div>
 
 
@@ -164,6 +210,3 @@
 </body>
 </html>
 
-<?php
-    include ("addproductlogic.php");
-?>

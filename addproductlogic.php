@@ -18,8 +18,9 @@
         $newImageName .= '.' . $extension;
         move_uploaded_file($temppimage, 'uploaded_images/'.$newImageName);
 
-        $query = "insert into tblproduct(Store_ID, Product_Name, Product_Description, Price, Stock, Product_Image) values('$store','$pname', '$pdesc', '$price', '$stock', '$newImageName')";
-        mysqli_query($connection, $query);
+        $query = $connection->prepare("insert into tblproduct(Store_ID, Product_Name, Product_Description, Price, Stock, Product_Image) values(?, ?, ?, ?, ?, ?)");
+        $query->bind_param("issdis",$store, $pname, $pdesc, $price, $stock, $newImageName);
+        $query->execute();
 
 
         echo "<script>

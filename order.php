@@ -79,15 +79,15 @@
                    <div class="row g-3">
                        <div class="my-3">
                            <div class="form-check">
-                               <input id="ninjavan" name="shipmentMethod" type="radio" class="form-check-input" required>
+                               <input id="ninjavan" value="NinjaVan" name="shipmentMethod" type="radio" class="form-check-input" required>
                                <label class="form-check-label" for="ninjavan">NinjaVan</label>
                            </div>
                            <div class="form-check">
-                               <input id="fedex" name="shipmentMethod" type="radio" class="form-check-input" required>
+                               <input id="fedex" value="FedEx" name="shipmentMethod" type="radio" class="form-check-input" required>
                                <label class="form-check-label" for="fedex">FedEx</label>
                            </div>
                            <div class="form-check">
-                               <input id="regular" name="shipmentMethod" type="radio" class="form-check-input" checked required>
+                               <input id="regular" value="Standard" name="shipmentMethod" type="radio" class="form-check-input" checked required>
                                <label class="form-check-label" for="regular">Standard Shipping</label>
                            </div>
                        </div>
@@ -124,10 +124,10 @@
                        </div>
 
                        <div class="col-md-4">
-                           <label for="province" class="form-label">Province</label>
-                           <input type="text" class="form-control" id="province" name="province" required>
+                           <label for="province" class="form-label">City/Municipality & Province</label>
+                           <input type="text" class="form-control" id="province" name="munprovince" placeholder="Mandaue City, Cebu" required>
                            <div class="invalid-feedback province-invalid">
-                               Please provide a valid province.
+                               Please provide a valid municipality and province.
                            </div>
                        </div>
 
@@ -146,15 +146,15 @@
 
                    <div class="my-3">
                        <div class="form-check">
-                           <input id="credit" name="paymentMethod" type="radio" class="form-check-input" onclick="displaycard()" checked required>
-                           <label class="form-check-label" for="credit">Credit card</label>
+                           <input id="credit" value="Credit" name="paymentMethod" type="radio" class="form-check-input" onclick="displaycard()" checked required>
+                           <label class="form-check-label" for="credit">Credit Card</label>
                        </div>
                        <div class="form-check">
-                           <input id="debit" name="paymentMethod" type="radio" class="form-check-input" onclick="displaycard()" required>
-                           <label class="form-check-label" for="debit">Debit card</label>
+                           <input id="debit" value="Debit" name="paymentMethod" type="radio" class="form-check-input" onclick="displaycard()" required>
+                           <label class="form-check-label" for="debit">Debit Card</label>
                        </div>
                        <div class="form-check">
-                           <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" onclick="displaycard()" required>
+                           <input id="paypal" value="PayPal" name="paymentMethod" type="radio" class="form-check-input" onclick="displaycard()" required>
                            <label class="form-check-label" for="paypal">PayPal</label>
                        </div>
                    </div>

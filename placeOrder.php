@@ -6,7 +6,7 @@ if (isset($_POST['placeOrder'])) {
 
     $shipmethod = $_POST['shipmentMethod'];
     $name = $_POST['fname']." ".$_POST['lname'];
-    $address = $_POST['address'].", ".$_POST['province'].", ".$_POST['country']." ".$_POST['zip'];
+    $address = $_POST['address'].", ".$_POST['munprovince'].", ".$_POST['country']." ".$_POST['zip'];
 
     $paymethod = $_POST['paymentMethod'];
     $cardName = $_POST['cardName'];

@@ -47,17 +47,17 @@
     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
         <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
     </svg>
-    Your product has been added.
+    Order Status has been updated.
     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
     </button>
 </div>
 
 <script>
-    const productCreated = window.sessionStorage.getItem('productCreated');
+    const statusUpdated = window.sessionStorage.getItem('statusUpdated');
 
-    if (productCreated === 'true') {
+    if (statusUpdated === 'true') {
         document.querySelector('.alert').style.display = 'block';
-        window.sessionStorage.removeItem('productCreated');
+        window.sessionStorage.removeItem('statusUpdated');
     }
 </script>
 
@@ -91,8 +91,8 @@
                 </a>
             </li>
             <li>
-                <a href="sellerOrders.php" class="nav-link link-body-emphasis text-black">
-                    <svg class="bi pe-none me-2" width="16" height="16"><use xlink:href="#table"/></svg>
+                <a href="sellerOrders.php" class="nav-link link-body-emphasis da active">
+                    <svg class="bi pe-none me-2 text-white" width="16" height="16"><use xlink:href="#table"/></svg>
                     Orders
                 </a>
             </li>
@@ -105,8 +105,8 @@
                 </a>
                 <div class="collapse ps-3" id="storeContent" >
                     <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                        <li><a href="sellerProducts.php" class="nav-link rounded da active">
-                                <svg class="bi pe-none me-2 text-white" width="16" height="16"><use xlink:href="#grid"/></svg>
+                        <li><a href="sellerProducts.php" class="nav-link rounded text-black">
+                                <svg class="bi pe-none me-2 text-black" width="16" height="16"><use xlink:href="#grid"/></svg>
                                 Products</a></li>
                     </ul>
                 </div>
@@ -139,94 +139,193 @@
         </div>
     </div>
 
-    <div class="col">
+    <?php
+    $orderID = $_GET['id'];
+    $store = mysqli_fetch_assoc(mysqli_query($connection, "select Store_ID from tblstore where Seller_ID='$id'"))['Store_ID'];
+    $order = $connection->prepare("SELECT product.Product_Name, product.Product_Image, orderitem.Quantity, orderitem.Total_OrderItem_Price from tblproduct as product, tblorder_item as orderitem WHERE orderitem.Product_ID = product.Product_ID AND product.Store_ID = ? AND orderitem.Order_ID = ?");
+    $order->bind_param("ii", $store,$orderID);
+    $order->execute();
+    $orderItems = $order->get_result();
+
+    $shipping = $connection->prepare("SELECT shipment.Shipment_Method, shipment.Shipment_Name, shipment.Address from tblshipment as shipment WHERE shipment.Order_ID = ?");
+    $shipping->bind_param("i", $orderID);
+    $shipping->execute();
+    $shippingDetails = mysqli_fetch_assoc($shipping->get_result());
+    ?>
+    <div class="col m-4">
+        <div class="d-flex justify-content-between align-items-center">
+            <h1 class="fw-bolder">Order Details</h1>
+            <a href="sellerOrders.php" class="btn btn-primary see-more">
+                <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" fill="currentColor" class="bi bi-arrow-return-left text-white" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M14.5 1.5a.5.5 0 0 1 .5.5v4.8a2.5 2.5 0 0 1-2.5 2.5H2.707l3.347 3.346a.5.5 0 0 1-.708.708l-4.2-4.2a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 8.3H12.5A1.5 1.5 0 0 0 14 6.8V2a.5.5 0 0 1 .5-.5"/>
+                </svg>
+            </a>
+        </div>
+        <hr>
+        <h3>Products Details</h3>
         <table class="table align-middle mb-0 bg-white">
             <thead class="bg-light">
             <tr>
                 <th class="fw-bold">Product Name</th>
-                <th class="fw-bold">Rating</th>
-                <th class="fw-bold">Stock</th>
+                <th class="fw-bold">Quantity</th>
                 <th class="fw-bold">Price</th>
-                <th></th>
-                <th></th>
+
             </tr>
             </thead>
             <tbody>
-            <?php
-                $store = mysqli_fetch_assoc(mysqli_query($connection, "select Store_ID from tblstore where Seller_ID='$id'"))['Store_ID'];
-                $sqlproducts = mysqli_query($connection, "select * from tblproduct where Store_ID='$store' AND is_Deleted = 'NO'");
+                <?php
+                while($row = mysqli_fetch_assoc($orderItems)) {
+                    $name = $row['Product_Name'];
+                    $image = "uploaded_images/".$row['Product_Image'];
+                    $quant = $row['Quantity'];
+                    $price = "P".number_format($row['Total_OrderItem_Price'], 2);
 
-                if ($sqlproducts) {
-                    if (mysqli_num_rows($sqlproducts)>0) {
-
-                        while ($row=mysqli_fetch_assoc($sqlproducts)){
-                            $image = 'uploaded_images/';
-                            $image .= $row['Product_Image'];
-                            $pname = $row["Product_Name"];
-                            $stock = $row["Stock"];
-                            $productID = $row["Product_ID"];
-                            $price = "P".number_format($row["Price"], 2);
-
-                            $rating = "";
-                            for ($i = 0; $i < 5; $i++) {
-                                if ($i < $row['Average_Rating']) {
-                                    $rating .= "<i class='fa fa-star'></i>";
-                                } else {
-                                    $rating .= "<i class='fa fa-star-o'></i>";
-                                }
-                            }
-
-                            echo "
-                            
-            <tr>
-                <td>
-                    <div class='d-flex align-items-center'>
-                        <img
-                            src='$image'
-                            alt=''
-                            style='width: 45px; height: 45px'
-                            class='rounded-circle'
-                        />
-                        <div class='ms-3'>
-                            <p class='fw-bold mb-1'>$pname</p>
-                        </div>
-                    </div>
-                </td>
-                <td>
-                    <div class='ratings'>
-                        $rating
-                    </div>
-                </td>
-                <td>
-                    <p class='fw-normal mb-1'>$stock</p>
-                </td>
-                <td>
-                    <p class='fw-normal mb-1'>$price</p>
-                </td>
-                <td>
-                    <button type='button' class='btn btn-link btn-sm btn-rounded fw-bold'>
-                        Edit
-                    </button>
-                </td>
-                <td>
-                    <a href='deleteProduct.php?id=$productID' class='btn btn-link btn-sm btn-rounded fw-bold'>
-                        <svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='currentColor' class='bi bi-trash-fill' viewBox='0 0 16 16'>
-                              <path d='M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5M8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5m3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0'/>
-                        </svg>
-                    </a>
-                </td>
-                            
-                            ";
-                        }
-                    }
+                    echo "
+                    <tr>
+                        <td>
+                            <div class='d-flex align-items-center'>
+                                <img
+                                    src='$image'
+                                    alt=''
+                                    style='width: 45px; height: 45px'
+                                    class='rounded-circle'
+                                />
+                                <div class='ms-3'>
+                                    <p class='fw-bold mb-1'>$name</p>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            $quant
+                        </td>
+                        <td>
+                            $price
+                        </td>
+                    </tr>
+                    ";
                 }
-            ?>
 
+                ?>
             </tbody>
         </table>
+        <hr>
+        <h3>Shipment Details</h3>
+        <div class="my-3 border border-2 border-warning w-25 p-2">
+            <h5 class="fw-bold"><?php echo $shippingDetails['Shipment_Name']?></h5>
+            <?php
+                $address = explode(",", $shippingDetails['Address']);
+            ?>
+            <h6><?php echo $address[0]?></h6>
+            <h6><?php echo $address[1].", ".$address[2]?></h6>
+            <h6><?php echo $address[3]?></h6>
+        </div>
+        <hr>
+        <form method="post">
+            <div class="row">
+                <div class="col">
+                    <label class="form-label" for="OrderStatus">Order Status</label>
+                    <select id="OrderStatus" class="form-select" aria-label="OrderStatus" name="OrderStatus">
+                        <?php
+                        $statusquery = "SELECT Order_Status from tblorder WHERE Order_ID = '$orderID'";
+                        $status = mysqli_fetch_assoc(mysqli_query($connection, $statusquery))['Order_Status'];
+                        $statuses = ["PENDING", "PROCESSING", "SHIPPED"];
+                        for ($i = 0; $i < 3; $i++) {
+                            if (!strcmp($status, $statuses[$i])) {
+                                echo "<option value=$statuses[$i] selected>$statuses[$i]</option>";
+                            } else {
+                                echo "<option value=$statuses[$i]>$statuses[$i]</option>";
+                            }
+                        }
+                        ?>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="trackingNumber" class="form-label">Tracking Number</label>
+                    <?php
+                    $tracking = $connection->prepare("Select Tracking_Number from tblshipment WHERE Order_ID = ?");
+                    $tracking->bind_param("i", $orderID);
+                    $tracking->execute();
+                    $tNumber = mysqli_fetch_assoc($tracking->get_result())['Tracking_Number'];
+
+                    if (!empty($tNumber)) {
+                        echo "<input class='form-control' id='trackingNumber' value='$tNumber' type='text' disabled>";
+                    } else {
+                        echo "<input class='form-control' name='trackingNumber' id='trackingNumber' type='text'>";
+                    }
+
+                    ?>
+                </div>
+            </div>
+
+
+            <button class="btn btn-primary see-more mt-2" type="button" data-bs-toggle="modal" data-bs-target="#updateModal" onclick="confirmStatus()">Update Order</button>
+
+            <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateConfirmation" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h3 class="modal-title fs-6" id="confirmationTitle">Are you sure you want to make the following changes?</h3>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <span class="fw-bold">STATUS -> </span><span class="changedStatus"></span><br>
+                            <span class="fw-bold setTracker-label">TRACKING NUMBER -> </span><span class="setTracker"></span>
+                        </div>
+                        <script>
+                            function confirmStatus() {
+                                const pickedStatus = document.querySelector("#OrderStatus");
+                                const modalStatus = document.querySelector(".changedStatus");
+
+                                const trackerLabel = document.querySelector(".setTracker-label");
+                                const setTracker = document.querySelector(".setTracker");
+                                const trackerInfo = document.querySelector("#trackingNumber");
+
+                                modalStatus.innerHTML = pickedStatus.value;
+
+                                if (trackerInfo.value !== "" && !trackerInfo.disabled) {
+                                    trackerLabel.style.removeProperty("display");
+                                    setTracker.style.removeProperty("display");
+                                    setTracker.innerHTML = trackerInfo.value;
+                                } else {
+                                    trackerLabel.style.display = "none";
+                                    setTracker.style.display = "none";
+                                }
+                            }
+                        </script>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary" name="saveChangedStatus">Save changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 
+<?php
+if (isset($_POST['saveChangedStatus'])) {
+   $newStatus = $_POST['OrderStatus'];
+   $statusquery = $connection->prepare("UPDATE tblorder SET Order_Status = ? WHERE Order_ID = ?");
+   $statusquery->bind_param("si", $newStatus, $orderID);
+   $statusquery->execute();
+
+   $tracking = $_POST['trackingNumber'];
+   if (!empty($tracking)){
+      $t = $connection->prepare("UPDATE tblshipment SET Tracking_Number = ? WHERE Order_ID = ?");
+      $t->bind_param("si", $tracking, $orderID);
+      $t->execute();
+   }
+
+   echo "
+   <script>
+      window.sessionStorage.setItem('statusUpdated', 'true'); 
+      window.location.replace('checkOrder.php?id=$orderID');
+   </script>
+   ";
+}
+
+?>
 
 <?php
     include("includes/footer.php");
@@ -235,6 +334,7 @@
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
 
-
 </body>
 </html>
+
+

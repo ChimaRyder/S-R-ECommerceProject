@@ -43,24 +43,6 @@
     </symbol>
 </svg>
 
-<div class="alert alert-success alert-dismissible fade show" role="alert">
-    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
-        <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0m-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
-    </svg>
-    Your product has been added.
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
-    </button>
-</div>
-
-<script>
-    const productCreated = window.sessionStorage.getItem('productCreated');
-
-    if (productCreated === 'true') {
-        document.querySelector('.alert').style.display = 'block';
-        window.sessionStorage.removeItem('productCreated');
-    }
-</script>
-
 <div class="row w-100">
 
     <div class="col-2 d-flex flex-column flex-shrink-0 p-3 bg-body-tertiary ms-2" style="width: 280px; height: 80vh;">
@@ -152,7 +134,7 @@
             <tbody>
             <?php
                 $store = mysqli_fetch_assoc(mysqli_query($connection, "select Store_ID from tblstore where Seller_ID='$id'"))['Store_ID'];
-                $order = $connection->prepare("SELECT orders.Order_ID, customer.First_Name, customer.Last_Name, SUM(orderitem.Total_OrderItem_Price) as Price from tblproduct as product, tblorder as orders, tblcustomer as customer, tblorder_item as orderitem WHERE product.Store_ID = ? AND orderitem.Product_ID = product.Product_ID AND orders.Order_ID = orderitem.Order_ID AND customer.Customer_ID = orders.Customer_ID ORDER BY orders.Order_Date DESC");
+                $order = $connection->prepare("SELECT orders.Order_ID, customer.First_Name, customer.Last_Name, SUM(orderitem.Total_OrderItem_Price) as Price from tblproduct as product, tblorder as orders, tblcustomer as customer, tblorder_item as orderitem WHERE product.Store_ID = ? AND orderitem.Product_ID = product.Product_ID AND orders.Order_ID = orderitem.Order_ID AND customer.Customer_ID = orders.Customer_ID AND NOT orders.Order_Status = 'DELIVERED' ORDER BY orders.Order_Date DESC");
                 $order->bind_param("i",$store);
                 $order->execute();
                 $res = $order->get_result();
@@ -161,6 +143,9 @@
                     if (mysqli_num_rows($res)>0) {
 
                         while ($row=mysqli_fetch_assoc($res)){
+                            if (empty($row['Order_ID'])){
+                                continue;
+                            }
                            $orderid = $row['Order_ID'];
                            $name = $row['First_Name']." ".$row['Last_Name'];
                            $price = "P".number_format($row['Price'], 2);

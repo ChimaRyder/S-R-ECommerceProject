@@ -23,8 +23,8 @@
         $query->execute();
 
 
+        $_SESSION['productCreated'] = 'true';
         echo "<script>
-               window.sessionStorage.setItem('productCreated', 'true');
                window.location.replace('sellerProducts.php');
             </script>";
     }

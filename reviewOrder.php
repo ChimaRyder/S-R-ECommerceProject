@@ -222,9 +222,9 @@
                $confirm->bind_param("i", $orderID);
                $confirm->execute();
 
+               $_SESSION['orderReceived'] = 'true';
                echo "
                <script>
-                    window.sessionStorage.setItem('orderReceived', 'true');
                     window.location.replace('customerOrders.php');
                </script>
                ";

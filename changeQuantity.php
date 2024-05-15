@@ -11,9 +11,9 @@ if (isset($_POST['changeQuantity'])) {
     $updatequery->bind_param("iii", $cart, $cart, $cart);
     $updatequery->execute();
 
+    $_SESSION['updatedProduct'] = 'true';
     echo "
         <script>
-            window.sessionStorage.setItem('updatedProduct','true');
             window.location.replace(window.location.href);
         </script>
     ";

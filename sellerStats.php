@@ -122,7 +122,127 @@
             </div>
         </div>
 
+        <?php
 
+        $query = $connection->prepare("SELECT MONTHNAME(Order_Date) as salemonth, SUM(Total_Order_Price) as total_profits from tblorder GROUP BY YEAR(Order_Date), MONTH(Order_Date) LIMIT 6");
+        $query->execute();
+        $res = $query->get_result();
+        $chart_data = "";
+
+        while($row = mysqli_fetch_array($res)){
+            $months[] = $row['salemonth'];
+            $profits[] = $row['total_profits'];
+        }
+        ?>
+
+        <div class="col m-4">
+            <div class="row">
+                <div class="col w-50">
+                    <div class="card m-4 border bg-warning">
+                        <div class="card-header"><span class="fw-bold">Profits per Month</span></div>
+                        <div class="card-body">
+                            <canvas id="profitsGraph" width="10"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+                <script>
+                    let chart = document.getElementById("profitsGraph").getContext("2d");
+                    let n = new Chart(chart,{
+                        type:'bar',
+                        data: {
+                            labels: <?php echo json_encode($months);?>,
+                            datasets: [{
+                                backgroundColor: [
+                                    "#a10e15",
+                                    "#a10e15",
+                                    "#a10e15",
+                                    "#a10e15",
+                                    "#a10e15",
+                                    "#a10e15",
+                                ],
+                                data:<?php echo json_encode($profits);?>,
+                                label:<?php echo json_encode($months);?>
+                            }]
+                        },
+                        options:{
+                            legend:{
+                                display: false,
+                                position: 'top',
+                                labels: {
+                                    fontFamily:'Arial',
+                                    fontSize: 12,
+                                }
+                            },
+                        }
+                    });
+                </script>
+                <div class="col">
+                    <div class="card m-4 border">
+                        <div class="card-header"><span class="fw-bold">Recent Orders</span></div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th class="fw-bold" scope="col">Customer Name</th>
+                                <th class="fw-bold" scope="col">Profit</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                        <?php
+                        $store = mysqli_fetch_assoc(mysqli_query($connection, "select Store_ID from tblstore where Seller_ID='$id'"))['Store_ID'];
+                        $order = $connection->prepare("SELECT orders.Order_ID, customer.First_Name, customer.Last_Name, SUM(orderitem.Total_OrderItem_Price) as Price from tblproduct as product, tblorder as orders, tblcustomer as customer, tblorder_item as orderitem WHERE product.Store_ID = ? AND orderitem.Product_ID = product.Product_ID AND orders.Order_ID = orderitem.Order_ID AND customer.Customer_ID = orders.Customer_ID AND NOT orders.Order_Status = 'DELIVERED' ORDER BY orders.Order_Date DESC");
+                        $order->bind_param("i",$store);
+                        $order->execute();
+                        $res = $order->get_result();
+
+                        while($row = mysqli_fetch_assoc($res)){
+                            if (empty($row['Order_ID'])){
+                                continue;
+                            }
+                            $order = $row['Order_ID'];
+                            $name = $row['First_Name']." ".$row['Last_Name'];
+                            $Price = number_format($row['Price'],2);
+                            echo "
+                            <tr>
+                                <td>$name</td>
+                                <td>+ P$Price</td>
+                                <td><a href='checkOrder.php?id=$order' class='btn btn-primary see-more'>View</a></td>
+                            </tr>
+                            ";
+                        }
+                        ?>
+                            </tbody>
+                        </table>
+                    </div>
+                    </div>
+                </div>
+            </div>
+            <?php
+                $dailyProfit = $connection->prepare("SELECT SUM(Total_Order_Price) as Total_Profit from tblorder WHERE DATE(Order_Date) = current_date");
+                $dailyProfit->execute();
+                $profit = mysqli_fetch_assoc($dailyProfit->get_result())['Total_Profit'];
+            ?>
+           <div class="row">
+               <div class="col">
+                   <div class="card bg-danger text-white mb-4">
+                       <div class="card-header fw-bold">Daily Profit</div>
+                       <div class="card-body d-flex justify-content-center"><h3>+ P<?php echo $profit ? number_format($profit, 2) : "0.00"?><h3></div>
+                   </div>
+               </div>
+<!--               <div class="col">-->
+<!--                   <div class="card bg-danger text-white mb-4">-->
+<!--                       <div class="card-header">Today's Popular Item</div>-->
+<!--                       <div class="card-body">2</div>-->
+<!--                       <div class="card-footer d-flex align-items-center justify-content-between">-->
+<!--                           <a class="small text-white stretched-link" href="#">View Details</a>-->
+<!--                           <div class="small text-white"><i class="fas fa-angle-right"></i></div>-->
+<!--                       </div>-->
+<!--                   </div>-->
+<!--               </div>-->
+           </div>
+        </div>
 
     </div>
 

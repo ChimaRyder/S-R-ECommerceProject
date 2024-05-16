@@ -221,12 +221,13 @@
                 </div>
             </div>
             <?php
-                $dailyProfit = $connection->prepare("SELECT SUM(oi.Total_OrderItem_Price) as Total_Profit from tblorder as o, tblorder_item as oi, tblproduct as p WHERE DATE(Order_Date) = current_date AND o.Order_ID = oi.Order_ID AND oi.Product_ID = p.Product_ID AND p.Store_ID = 1");
+                $dailyProfit = $connection->prepare("SELECT SUM(oi.Total_OrderItem_Price) as Total_Profit from tblorder as o, tblorder_item as oi, tblproduct as p WHERE DATE(Order_Date) = current_date AND o.Order_ID = oi.Order_ID AND oi.Product_ID = p.Product_ID AND p.Store_ID = ?");
+                $dailyProfit->bind_param("i", $store);
                 $dailyProfit->execute();
                 $profit = mysqli_fetch_assoc($dailyProfit->get_result());
                 $prof = "0.00";
                 if($profit) {
-                    $profit = number_format($profit['Total_Profit'], 2);
+                    $prof = number_format($profit['Total_Profit'], 2);
                 }
 
                 $popularItem = $connection->prepare("SELECT p.Product_ID, p.Product_Name, SUM(oi.Quantity) as total_quantity from tblorder_item as oi, tblorder as o, tblproduct as p WHERE o.Order_ID = oi.Order_ID AND DATE(o.Order_Date) = CURRENT_DATE AND oi.Product_ID = p.Product_ID AND p.Store_ID = ? GROUP BY oi.Product_ID ORDER BY total_quantity DESC LIMIT 1");

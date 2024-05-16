@@ -221,23 +221,31 @@
                 </div>
             </div>
             <?php
-                $dailyProfit = $connection->prepare("SELECT SUM(Total_Order_Price) as Total_Profit from tblorder WHERE DATE(Order_Date) = current_date");
+                $dailyProfit = $connection->prepare("SELECT SUM(oi.Total_OrderItem_Price) as Total_Profit from tblorder as o, tblorder_item as oi, tblproduct as p WHERE DATE(Order_Date) = current_date AND o.Order_ID = oi.Order_ID AND oi.Product_ID = p.Product_ID AND p.Store_ID = 1");
                 $dailyProfit->execute();
-                $profit = mysqli_fetch_assoc($dailyProfit->get_result())['Total_Profit'];
+                $profit = mysqli_fetch_assoc($dailyProfit->get_result());
+                $prof = "0.00";
+                if($profit) {
+                    $profit = number_format($profit['Total_Profit'], 2);
+                }
 
                 $popularItem = $connection->prepare("SELECT p.Product_ID, p.Product_Name, SUM(oi.Quantity) as total_quantity from tblorder_item as oi, tblorder as o, tblproduct as p WHERE o.Order_ID = oi.Order_ID AND DATE(o.Order_Date) = CURRENT_DATE AND oi.Product_ID = p.Product_ID AND p.Store_ID = ? GROUP BY oi.Product_ID ORDER BY total_quantity DESC LIMIT 1");
                 $popularItem->bind_param("i", $store);
                 $popularItem->execute();
                 $row = mysqli_fetch_assoc($popularItem->get_result());
-                $pI = $row['Product_Name'];
-                $pIID = "product.php?id=".$row['Product_ID'];
+                $pI = "Nothing yet.";
+                $pIID = "#";
+                if ($row){
+                    $pI = $row['Product_Name'];
+                    $pIID = "product.php?id=".$row['Product_ID'];
+                }
 
             ?>
            <div class="row">
                <div class="col">
                    <div class="card bg-danger text-white mb-4">
                        <div class="card-header fw-bold">Daily Profit</div>
-                       <div class="card-body d-flex justify-content-center"><h3>+ P<?php echo $profit ? number_format($profit, 2) : "0.00"?><h3></div>
+                       <div class="card-body d-flex justify-content-center"><h3>+ P<?php echo $prof?><h3></div>
                    </div>
                </div>
                <div class="col">
@@ -245,7 +253,7 @@
                        <div class="card-header">Today's Popular Item</div>
                        <div class="card-body"><?php echo $pI?></div>
                        <div class="card-footer d-flex align-items-center justify-content-between">
-                           <a class="small text-white stretched-link" href=<?php echo $pIID ? $pIID : "Nothing yet."?>>View Details</a>
+                           <a class="small text-white stretched-link" href=<?php echo $pIID?>>View Details</a>
                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                        </div>
                    </div>

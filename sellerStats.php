@@ -245,7 +245,7 @@
                        <div class="card-header">Today's Popular Item</div>
                        <div class="card-body"><?php echo $pI?></div>
                        <div class="card-footer d-flex align-items-center justify-content-between">
-                           <a class="small text-white stretched-link" href=<?php echo $pIID?>>View Details</a>
+                           <a class="small text-white stretched-link" href=<?php echo $pIID ? $pIID : "Nothing yet."?>>View Details</a>
                            <div class="small text-white"><i class="fas fa-angle-right"></i></div>
                        </div>
                    </div>

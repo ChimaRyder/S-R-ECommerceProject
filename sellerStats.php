@@ -124,7 +124,9 @@
 
         <?php
 
-        $query = $connection->prepare("SELECT MONTHNAME(Order_Date) as salemonth, SUM(Total_Order_Price) as total_profits from tblorder GROUP BY YEAR(Order_Date), MONTH(Order_Date) LIMIT 6");
+        $store = mysqli_fetch_assoc(mysqli_query($connection, "select Store_ID from tblstore where Seller_ID='$id'"))['Store_ID'];
+        $query = $connection->prepare("SELECT MONTHNAME(o.Order_Date) as salemonth, SUM(oi.Total_OrderItem_Price) as total_profits from tblorder as o, tblorder_item as oi, tblproduct as p WHERE o.Order_ID = oi.Order_ID AND oi.Product_ID = p.Product_ID AND p.Store_ID = ? GROUP BY YEAR(Order_Date), MONTH(Order_Date) LIMIT 6");
+        $query->bind_param("i", $store);
         $query->execute();
         $res = $query->get_result();
         $chart_data = "";
@@ -191,7 +193,6 @@
                             </thead>
                             <tbody>
                         <?php
-                        $store = mysqli_fetch_assoc(mysqli_query($connection, "select Store_ID from tblstore where Seller_ID='$id'"))['Store_ID'];
                         $order = $connection->prepare("SELECT orders.Order_ID, customer.First_Name, customer.Last_Name, SUM(orderitem.Total_OrderItem_Price) as Price from tblproduct as product, tblorder as orders, tblcustomer as customer, tblorder_item as orderitem WHERE product.Store_ID = ? AND orderitem.Product_ID = product.Product_ID AND orders.Order_ID = orderitem.Order_ID AND customer.Customer_ID = orders.Customer_ID AND NOT orders.Order_Status = 'DELIVERED' ORDER BY orders.Order_Date DESC");
                         $order->bind_param("i",$store);
                         $order->execute();
@@ -223,6 +224,14 @@
                 $dailyProfit = $connection->prepare("SELECT SUM(Total_Order_Price) as Total_Profit from tblorder WHERE DATE(Order_Date) = current_date");
                 $dailyProfit->execute();
                 $profit = mysqli_fetch_assoc($dailyProfit->get_result())['Total_Profit'];
+
+                $popularItem = $connection->prepare("SELECT p.Product_ID, p.Product_Name, SUM(oi.Quantity) as total_quantity from tblorder_item as oi, tblorder as o, tblproduct as p WHERE o.Order_ID = oi.Order_ID AND DATE(o.Order_Date) = CURRENT_DATE AND oi.Product_ID = p.Product_ID AND p.Store_ID = ? GROUP BY oi.Product_ID ORDER BY total_quantity DESC LIMIT 1");
+                $popularItem->bind_param("i", $store);
+                $popularItem->execute();
+                $row = mysqli_fetch_assoc($popularItem->get_result());
+                $pI = $row['Product_Name'];
+                $pIID = "product.php?id=".$row['Product_ID'];
+
             ?>
            <div class="row">
                <div class="col">
@@ -231,16 +240,16 @@
                        <div class="card-body d-flex justify-content-center"><h3>+ P<?php echo $profit ? number_format($profit, 2) : "0.00"?><h3></div>
                    </div>
                </div>
-<!--               <div class="col">-->
-<!--                   <div class="card bg-danger text-white mb-4">-->
-<!--                       <div class="card-header">Today's Popular Item</div>-->
-<!--                       <div class="card-body">2</div>-->
-<!--                       <div class="card-footer d-flex align-items-center justify-content-between">-->
-<!--                           <a class="small text-white stretched-link" href="#">View Details</a>-->
-<!--                           <div class="small text-white"><i class="fas fa-angle-right"></i></div>-->
-<!--                       </div>-->
-<!--                   </div>-->
-<!--               </div>-->
+               <div class="col">
+                   <div class="card bg-danger text-white mb-4">
+                       <div class="card-header">Today's Popular Item</div>
+                       <div class="card-body"><?php echo $pI?></div>
+                       <div class="card-footer d-flex align-items-center justify-content-between">
+                           <a class="small text-white stretched-link" href=<?php echo $pIID?>>View Details</a>
+                           <div class="small text-white"><i class="fas fa-angle-right"></i></div>
+                       </div>
+                   </div>
+               </div>
            </div>
         </div>
 

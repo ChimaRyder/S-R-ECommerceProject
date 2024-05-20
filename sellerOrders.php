@@ -134,7 +134,7 @@
             <tbody>
             <?php
                 $store = mysqli_fetch_assoc(mysqli_query($connection, "select Store_ID from tblstore where Seller_ID='$id'"))['Store_ID'];
-                $order = $connection->prepare("SELECT orders.Order_ID, customer.First_Name, customer.Last_Name, SUM(orderitem.Total_OrderItem_Price) as Price from tblproduct as product, tblorder as orders, tblcustomer as customer, tblorder_item as orderitem WHERE product.Store_ID = ? AND orderitem.Product_ID = product.Product_ID AND orders.Order_ID = orderitem.Order_ID AND customer.Customer_ID = orders.Customer_ID AND NOT orders.Order_Status = 'DELIVERED' ORDER BY orders.Order_Date DESC");
+                $order = $connection->prepare("SELECT orders.Order_ID, customer.First_Name, customer.Last_Name, SUM(orderitem.Total_OrderItem_Price) as Price from tblproduct as product, tblorder as orders, tblcustomer as customer, tblorder_item as orderitem WHERE product.Store_ID = ? AND orderitem.Product_ID = product.Product_ID AND orders.Order_ID = orderitem.Order_ID AND customer.Customer_ID = orders.Customer_ID AND NOT orders.Order_Status = 'DELIVERED' GROUP BY orders.Order_ID ORDER BY orders.Order_Date DESC");
                 $order->bind_param("i",$store);
                 $order->execute();
                 $res = $order->get_result();
